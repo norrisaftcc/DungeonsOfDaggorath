@@ -113,74 +113,74 @@ void Scheduler::SYSTCB()
 //
 // It uses milliseconds instead of JIFFYs.  And it does
 // not have any queues, but a simple array of Task objects.
-void Scheduler::SCHED()
+bool Scheduler::SCHED()
 {
+    std::cout << "In SCHED" << std::endl;
 	// Initialization
 	int	result = 0;  // not currently being used
 	int	ctr = 0;
 
 	// Main game execution loop
-	do
+	curTime = SDL_GetTicks();
+
+	if (curTime >= TCBLND[ctr].next_time)
 	{
-		curTime = SDL_GetTicks();
-
-		if (curTime >= TCBLND[ctr].next_time)
+		switch (TCBLND[ctr].type)
 		{
-			switch (TCBLND[ctr].type)
-			{
-			case TID_CLOCK:
-				CLOCK();
-				break;
-			case TID_PLAYER:
-				result = player.PLAYER();
-				break;
-			case TID_REFRESH_DISP:
-				result = viewer.LUKNEW();
-				break;
-			case TID_HRTSLOW:
-				result = player.HSLOW();
-				break;
-			case TID_TORCHBURN:
-				result = player.BURNER();
-				break;
-			case TID_CRTREGEN:
-				result = creature.CREGEN();
-				break;
-			case TID_CRTMOVE:
-				result = creature.CMOVE(ctr, TCBLND[ctr].data);
-				break;
-			default:
-				// error
-				break;
-			}
+		case TID_CLOCK:
+			CLOCK();
+			break;
+		case TID_PLAYER:
+			result = player.PLAYER();
+			break;
+		case TID_REFRESH_DISP:
+			result = viewer.LUKNEW();
+			break;
+		case TID_HRTSLOW:
+			result = player.HSLOW();
+			break;
+		case TID_TORCHBURN:
+			result = player.BURNER();
+			break;
+		case TID_CRTREGEN:
+			result = creature.CREGEN();
+			break;
+		case TID_CRTMOVE:
+			result = creature.CMOVE(ctr, TCBLND[ctr].data);
+			break;
+		default:
+			// error
+			break;
 		}
+	}
 
-		(ctr < TCBPTR) ? ++ctr : ctr = 0;
+    std::cout << "after switch" << std::endl;
+	(ctr < TCBPTR) ? ++ctr : ctr = 0;
 
-		if (ZFLAG != 0) // Saving or Loading
+	if (ZFLAG != 0) // Saving or Loading
+	{
+		if (ZFLAG == 0xFF)
 		{
-			if (ZFLAG == 0xFF)
-			{
-				return; // Load game abandons current game
-			}
-			else
-			{
-				SAVE();
-				ZFLAG = 0;
-			}
+			return true; // Load game abandons current game
 		}
-
-		if (player.PLRBLK.P_ATPOW < player.PLRBLK.P_ATDAM)
+		else
 		{
-			return; // Death
+			SAVE();
+			ZFLAG = 0;
 		}
+	}
+    std::cout << "after ZFLAG" << std::endl;
 
-		if (game.hasWon)
-		{
-			return; // Victory
-		}
+	if (player.PLRBLK.P_ATPOW < player.PLRBLK.P_ATDAM)
+	{
+		return true; // Death
+	}
 
-	} while (result == 0);
+	if (game.hasWon)
+	{
+		return true; // Victory
+	}
+    return false;
 }
 
 // This is the heart of the game, literally.  It manages
@@ -223,7 +223,8 @@ void Scheduler::CLOCK()
 
 				// make sound
 				Mix_PlayChannel(hrtChannel, hrtSound[(dodBYTE) (player.HEARTS + 1)], 0);
-				while (Mix_Playing(hrtChannel) == 1) ; // !!!
+				emscripten_sleep(4); // Sound is 3.4 MS - is there a better way?
+//				while (Mix_Playing(hrtChannel) == 1) {emscripten_sleep(4);}; // !!!
 
 				if (player.HEARTF != 0)
 				{

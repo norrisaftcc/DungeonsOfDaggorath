@@ -59,6 +59,58 @@ OS_Link::OS_Link() : width(0), height(0), bpp(0), flags(0),
 	memset(gamefile,0,gamefileLen);
 }
 
+void OS_Link::render() {
+    std::cout << "In render" << std::endl;
+	bool handle_res = scheduler.SCHED();
+    std::cout << "after scheduler" << std::endl;
+    if(handle_res) { 
+	    if (scheduler.ZFLAG == 0xFF)
+	    {
+		    game.LoadGame();
+		    scheduler.ZFLAG = 0;
+	    }
+	    else
+	    {
+		    if (game.AUTFLG)
+		    {
+			    if (game.demoRestart)
+			    {
+				    // Restart demo
+				    game.hasWon = false;
+				    game.DEMOPTR = 0;
+				    object.Reset();
+				    creature.Reset();
+				    parser.Reset();
+				    player.Reset();
+				    scheduler.Reset();
+				    viewer.Reset();
+				    dungeon.VFTPTR = 0;
+				    game.COMINI();
+			    }
+			    else
+			    {
+				    // Start new game
+				    game.AUTFLG = false;
+				    game.Restart();
+			    }
+		    }
+		    else
+		    {
+			    game.Restart();
+		    }
+	    }
+    }
+}
+
+void main_game_loop(void* arg) {
+    std::cout << "In main game loop" << std::endl;
+    static_cast<OS_Link*>(arg)->render();
+}
+
+static void myError(GLenum error) {
+    std::cout << "Regal error: " << glErrorStringREGAL(error) << std::endl;
+}
+
 // This routine will eventually need updated to allow
 // user customization of screen size and resolution.
 // It currently asks for an 1024x768 screen size.
@@ -67,14 +119,16 @@ OS_Link::OS_Link() : width(0), height(0), bpp(0), flags(0),
 // uses defaults set by loadDefaults function (1024x768)
 void OS_Link::init()
 {
+    std::cout << "In init" << std::endl;
 	loadOptFile();
+    std::cout << "After opt file" << std::endl;
 
-	Uint32 ticks1, ticks2;
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
 	{
 		fprintf(stderr, "Video initialization failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
+    std::cout << "After sdl init" << std::endl;
 
 	if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
 	{
@@ -82,6 +136,7 @@ void OS_Link::init()
 		quitSDL(1);
 	}
 
+    std::cout << "After open audio" << std::endl;
 	creature.LoadSounds();
 	object.LoadSounds();
 	scheduler.LoadSounds();
@@ -89,22 +144,40 @@ void OS_Link::init()
 
 	Mix_AllocateChannels(4);
 	Mix_Volume(-1, MIX_MAX_VOLUME);
+    std::cout << "After load sounds" << std::endl;
 	if(FullScreen == 0){
 		sdlWindow = SDL_CreateWindow("DOD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, (int) (width * 0.75),SDL_WINDOW_OPENGL);
+        std::cout << "After full screen" << std::endl;
 	}else{
 		sdlWindow = SDL_CreateWindow("DOD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, (int) (width * 0.75),SDL_WINDOW_FULLSCREEN|SDL_WINDOW_OPENGL);
+        std::cout << "After not full screen" << std::endl;
 	}
+    std::cout << "After create window" << std::endl;
 
 	if(sdlWindow == 0){
 		fprintf(stderr, "Window creation failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
+
+    // Error callback
+    RegalSetErrorCallback(myError);
+
 	sdlGlContext = SDL_GL_CreateContext(sdlWindow);
+
+    // TRY THIS
+    RegalMakeCurrent((RegalSystemContext)1);
+
+
 	if(sdlGlContext == 0){
 		fprintf(stderr, "OpenGL context creation failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
+    std::cout << "After GL context" << std::endl;
 	//bpp = info->vfmt->BitsPerPixel;
+// TODO: ARE THESE NEEDED
+//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+//    SDL_GL_SetSwapInterval(0);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
@@ -115,6 +188,7 @@ void OS_Link::init()
 	changeVideoRes(width); // All changing video res code was moved here
 	SDL_SetWindowTitle(sdlWindow, "Dungeons of Daggorath");
 
+    std::cout << "After video res" << std::endl;
 	memset(keys, parser.C_SP, keyLen);
 
 	if (keylayout == 0) // QWERTY
@@ -182,54 +256,19 @@ void OS_Link::init()
 		keys[SDLK_SPACE] = parser.C_SP;
 	}
 
-	// Delay to wait for monitor to change modes if necessary
-	// This ought to be made more intelligent
-	ticks1 = SDL_GetTicks();
-	do
-	{
-		ticks2 = SDL_GetTicks();
-	} while (ticks2 < ticks1 + 2500);
+    std::cout << "After keys" << std::endl;
+    // Wait for modes to change
+    emscripten_sleep(2500);
+
+    std::cout << "After sleep" << std::endl;
 	game.COMINI();
- 	while (true)
-	{
-		scheduler.SCHED();
-		if (scheduler.ZFLAG == 0xFF)
-		{
-			game.LoadGame();
-			scheduler.ZFLAG = 0;
-		}
-		else
-		{
-			if (game.AUTFLG)
-			{
-				if (game.demoRestart)
-				{
-					// Restart demo
-					game.hasWon = false;
-					game.DEMOPTR = 0;
-					object.Reset();
-					creature.Reset();
-					parser.Reset();
-					player.Reset();
-					scheduler.Reset();
-					viewer.Reset();
-					dungeon.VFTPTR = 0;
-					game.COMINI();
-				}
-				else
-				{
-					// Start new game
-					game.AUTFLG = false;
-					game.Restart();
-				}
-			}
-			else
-			{
-				game.Restart();
-			}
-		}
-	}
+
+    std::cout << "After COMINI" << std::endl;
+    emscripten_set_main_loop_arg(main_game_loop, this, 0, 0);
+    std::cout << "End of init" << std::endl;
 }
+
+
 
 // Used to check for keystrokes and application termination
 void OS_Link::process_events()

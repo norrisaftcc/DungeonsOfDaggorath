@@ -444,6 +444,7 @@ void Viewer::draw_game()
 //   4 = Victory
 bool Viewer::ShowFade(int fadeMode)
 {
+    std::cout << "in showfade" << std::endl;
 	Uint32 ticks1, ticks2;
 	SDL_Event event;
 	int * wiz;
@@ -451,6 +452,7 @@ bool Viewer::ShowFade(int fadeMode)
 	VYSCAL = 0x80;
 
 	clearArea(&TXTPRI);
+    std::cout << "after cleararea showfade" << std::endl;
 
 	switch (fadeMode)
 	{
@@ -475,15 +477,19 @@ bool Viewer::ShowFade(int fadeMode)
 		displayWinner();
 	}
 
+    std::cout << "after case" << std::endl;
 	while(SDL_PollEvent(&event)) ; // clear event buffer
 
+    std::cout << "after while" << std::endl;
 	RANGE=1;
 	SETSCL();
 
+    std::cout << "after setscl" << std::endl;
 	// Start buzz
 	Mix_Volume(fadChannel, 0);
 	Mix_PlayChannel(fadChannel, creature.buzz, -1);
 
+    std::cout << "after playchannel" << std::endl;
 	for (VCTFAD = 32; (VCTFAD & 128) == 0; VCTFAD -= 2)
 	{
 		// Set volume of buzz
@@ -509,8 +515,10 @@ bool Viewer::ShowFade(int fadeMode)
 				while(SDL_PollEvent(&event)) ; // clear event buffer
 				return false;
 			}
+        emscripten_sleep(10);
 		} while (ticks2 < ticks1 + buzzStep);
 	}
+    std::cout << "after for" << std::endl;
 
 	VCTFAD = 0;
 
@@ -518,17 +526,22 @@ bool Viewer::ShowFade(int fadeMode)
 	Mix_HaltChannel(fadChannel);
 	Mix_Volume(fadChannel, oslink.volumeLevel);
 	Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+    std::cout << "after playchannel" << std::endl;
 	while (Mix_Playing(fadChannel) == 1)
 	{
 		if (fadeMode == 1 && scheduler.keyCheck())
 		{
+    std::cout << "in keycheck" << std::endl;
 			Mix_HaltChannel(fadChannel);
 			clearArea(&TXTPRI);
 			while(SDL_PollEvent(&event)) ; // clear event buffer
+    std::cout << "before return" << std::endl;
 			return false;
 		}
+        emscripten_sleep(10);
 	}
 
+    std::cout << "after while in docrash" << std::endl;
 	// show message
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -540,6 +553,7 @@ bool Viewer::ShowFade(int fadeMode)
 	drawArea(&TXTPRI);
 	SDL_GL_SwapWindow(oslink.sdlWindow);
 
+    std::cout << "after swapwindow" << std::endl;
 	if (fadeMode < 3)
 	{
 		// pause with wiz, status, and message
@@ -564,6 +578,7 @@ bool Viewer::ShowFade(int fadeMode)
 				while(SDL_PollEvent(&event)) ; // clear event buffer
 				return false;
 			}
+            emscripten_sleep(10);
 		} while (ticks2 < ticks1 + midPause);
 
 		// erase message
@@ -587,6 +602,7 @@ bool Viewer::ShowFade(int fadeMode)
 				while(SDL_PollEvent(&event)) ; // clear event buffer
 				return false;
 			}
+            emscripten_sleep(10);
 		}
 
 		// start buzz again
@@ -618,10 +634,12 @@ bool Viewer::ShowFade(int fadeMode)
 					while(SDL_PollEvent(&event)) ; // clear event buffer
 					return false;
 				}
+                emscripten_sleep(10);
 			} while (ticks2 < ticks1 + buzzStep);
 		}
 	}
 
+    std::cout << "before haltchannel" << std::endl;
 	Mix_HaltChannel(fadChannel);
 
 	if (fadeMode < 3)
@@ -643,11 +661,13 @@ bool Viewer::ShowFade(int fadeMode)
 			drawVectorList(wiz);
 			drawArea(&TXTPRI);
 			SDL_GL_SwapWindow(oslink.sdlWindow);
+            emscripten_sleep(10);
 		  }
 		clearArea(&TXTPRI);
 		while(SDL_PollEvent(&event)) ; // clear event buffer
 		return false;
 	}
+    std::cout << "done ShowFade" << std::endl;
 }
 
 // This is the renderer method used to do the wizard

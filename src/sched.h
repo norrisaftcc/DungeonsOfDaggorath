@@ -31,7 +31,7 @@ public:
 
 	// Public Interface
 	void		SYSTCB();
-	void		SCHED();
+	bool		SCHED();
 	void		CLOCK();
 	int			GETTCB();
 	bool		fadeLoop();

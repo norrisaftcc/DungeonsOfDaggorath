@@ -20,13 +20,18 @@ is held by Douglas J. Morgan.
 #ifndef OS_LINK_HEADER
 #define OS_LINK_HEADER
 
+#include "dod.h"
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-#include "dod.h"
 
  // Arbitrary Length of 80, maybe be changed if needed
 #define MAX_FILENAME_LENGTH 80
+
+// Define a main game loop to handle set_main_game_loop_arg
+void main_game_loop(void* arg);
+
 class OS_Link
 {
 public:
@@ -39,6 +44,8 @@ public:
 	void process_events();	// used mainly to retrieve keystrokes
 	bool main_menu();       // used to implement the meta-menu
 	bool saveOptFile(void);
+
+    void render(void);
 
 	// Public Data Fields
 	int		width;	// actual screen width after video setup

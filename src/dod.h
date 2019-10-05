@@ -19,9 +19,17 @@ is held by Douglas J. Morgan.
 #ifndef DOD_COMMON_HEADER
 #define DOD_COMMON_HEADER
 
+#include <iostream>
+#include <GL/Regal.h>
+#include <GL/RegalGLU.h>
+#include <emscripten.h>
+
 // SDL Headers
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+// Do I need this??? ADDED
+//#include <GLES2/gl2.h>
+//#include <GLES2/gl2ext.h>
 #include <SDL2/SDL_mixer.h>
 
 // Standard headers

@@ -3,15 +3,18 @@ OBJECTS = creature.o dod.o dodgame.o dungeon.o enhanced.o object.o oslink.o pars
 
 #CXX      = clang++-3.6
 ifeq ($(OS),Windows_NT)
-OUTPUT  = ../dod.exe
+OUTPUT  = ../dod.html
 CCLINK  = -lopengl32 -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_mixer
 else
-OUTPUT  = ../dod
-CCLINK  = -lGL -lSDL2 -lSDL2_mixer
+OUTPUT  = ../dod.html
+#CCLINK  = -lGL -lSDL2 -lSDL2_mixer -s USE_SDL=2 -s USE_SDL_MIXER=2
+#CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s LEGACY_GL_EMULATION=1
+#CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s FULL_ES2=1
+CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file ../assets@/ -s FULL_ES2=1 -s EMTERPRETIFY=1 -s EMTERPRETIFY_ASYNC=1 -s WASM=1 -s EXIT_RUNTIME=1
 endif
 #RM = rm
 # -g is debug
-CXXFLAGS = -std=c++11 -c
+CXXFLAGS = -std=c++11 -c -s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 -s FULL_ES2=1 -s EMTERPRETIFY=1 -s EMTERPRETIFY_ASYNC=1 -s WASM=1 -s EXIT_RUNTIME=1
 
 all: $(OUTPUT)
 

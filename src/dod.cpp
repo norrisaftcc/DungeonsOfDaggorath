@@ -60,7 +60,9 @@ int main(int argc, char * argv[])
 	//printvls();
 	//exit(0);
 
+    std::cout << "Initializing game\n" << std::endl;
 	oslink.init();
+    std::cout << "Done, returning." << std::endl;
 	return 0;
 }
 
