@@ -3,10 +3,10 @@ OBJECTS = creature.o dod.o dodgame.o dungeon.o enhanced.o object.o oslink.o pars
 
 #CXX      = clang++-3.6
 ifeq ($(OS),Windows_NT)
-OUTPUT  = ../dod.html
+OUTPUT  = ../docs/index.html
 CCLINK  = -lopengl32 -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_mixer
 else
-OUTPUT  = ../dod.html
+OUTPUT  = ../docs/index.html
 #CCLINK  = -lGL -lSDL2 -lSDL2_mixer -s USE_SDL=2 -s USE_SDL_MIXER=2
 #CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s LEGACY_GL_EMULATION=1
 #CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s FULL_ES2=1
