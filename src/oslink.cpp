@@ -60,9 +60,9 @@ OS_Link::OS_Link() : width(0), height(0), bpp(0), flags(0),
 }
 
 void OS_Link::render() {
-    std::cout << "In render" << std::endl;
+//    std::cout << "In render" << std::endl;
 	bool handle_res = scheduler.SCHED();
-    std::cout << "after scheduler" << std::endl;
+//    std::cout << "after scheduler" << std::endl;
     if(handle_res) { 
 	    if (scheduler.ZFLAG == 0xFF)
 	    {
@@ -103,7 +103,7 @@ void OS_Link::render() {
 }
 
 void main_game_loop(void* arg) {
-    std::cout << "In main game loop" << std::endl;
+//    std::cout << "In main game loop" << std::endl;
     static_cast<OS_Link*>(arg)->render();
 }
 
@@ -119,16 +119,16 @@ static void myError(GLenum error) {
 // uses defaults set by loadDefaults function (1024x768)
 void OS_Link::init()
 {
-    std::cout << "In init" << std::endl;
+//    std::cout << "In init" << std::endl;
 	loadOptFile();
-    std::cout << "After opt file" << std::endl;
+//    std::cout << "After opt file" << std::endl;
 
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
 	{
 		fprintf(stderr, "Video initialization failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
-    std::cout << "After sdl init" << std::endl;
+//    std::cout << "After sdl init" << std::endl;
 
 	if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
 	{
@@ -136,7 +136,7 @@ void OS_Link::init()
 		quitSDL(1);
 	}
 
-    std::cout << "After open audio" << std::endl;
+//    std::cout << "After open audio" << std::endl;
 	creature.LoadSounds();
 	object.LoadSounds();
 	scheduler.LoadSounds();
@@ -144,15 +144,15 @@ void OS_Link::init()
 
 	Mix_AllocateChannels(4);
 	Mix_Volume(-1, MIX_MAX_VOLUME);
-    std::cout << "After load sounds" << std::endl;
+//    std::cout << "After load sounds" << std::endl;
 	if(FullScreen == 0){
 		sdlWindow = SDL_CreateWindow("DOD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, (int) (width * 0.75),SDL_WINDOW_OPENGL);
-        std::cout << "After full screen" << std::endl;
+//        std::cout << "After full screen" << std::endl;
 	}else{
 		sdlWindow = SDL_CreateWindow("DOD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, (int) (width * 0.75),SDL_WINDOW_FULLSCREEN|SDL_WINDOW_OPENGL);
-        std::cout << "After not full screen" << std::endl;
+//        std::cout << "After not full screen" << std::endl;
 	}
-    std::cout << "After create window" << std::endl;
+//    std::cout << "After create window" << std::endl;
 
 	if(sdlWindow == 0){
 		fprintf(stderr, "Window creation failed: %s\n", SDL_GetError());
@@ -172,7 +172,7 @@ void OS_Link::init()
 		fprintf(stderr, "OpenGL context creation failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
-    std::cout << "After GL context" << std::endl;
+//    std::cout << "After GL context" << std::endl;
 	//bpp = info->vfmt->BitsPerPixel;
 // TODO: ARE THESE NEEDED
 //	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -188,7 +188,7 @@ void OS_Link::init()
 	changeVideoRes(width); // All changing video res code was moved here
 	SDL_SetWindowTitle(sdlWindow, "Dungeons of Daggorath");
 
-    std::cout << "After video res" << std::endl;
+//    std::cout << "After video res" << std::endl;
 	memset(keys, parser.C_SP, keyLen);
 
 	if (keylayout == 0) // QWERTY
@@ -256,16 +256,16 @@ void OS_Link::init()
 		keys[SDLK_SPACE] = parser.C_SP;
 	}
 
-    std::cout << "After keys" << std::endl;
+//    std::cout << "After keys" << std::endl;
     // Wait for modes to change
     emscripten_sleep(2500);
 
-    std::cout << "After sleep" << std::endl;
+//    std::cout << "After sleep" << std::endl;
 	game.COMINI();
 
-    std::cout << "After COMINI" << std::endl;
+//    std::cout << "After COMINI" << std::endl;
     emscripten_set_main_loop_arg(main_game_loop, this, 0, 0);
-    std::cout << "End of init" << std::endl;
+//    std::cout << "End of init" << std::endl;
 }
 
 
@@ -288,6 +288,7 @@ void OS_Link::process_events()
 			SDL_GL_SwapWindow(sdlWindow);
 			break;
 		}
+        emscripten_sleep(1); // Need to yield?
 	}
 }
 
@@ -302,6 +303,7 @@ void OS_Link::quitSDL(int code)
 // Processes key strokes.
 void OS_Link::handle_key_down(SDL_Keysym * keysym)
 {
+//    std::cout << "In handle_key_down" << std::endl;
 	dodBYTE c;
 	if (viewer.display_mode == Viewer::MODE_MAP)
 	{
@@ -351,6 +353,7 @@ void OS_Link::handle_key_down(SDL_Keysym * keysym)
 			case SDLK_RETURN:
 			case SDLK_SPACE:
 				c = keys[keysym->sym];
+//                std::cout << "Got key" << c << std::endl;
 				break;
 
 			case SDLK_ESCAPE:
@@ -429,6 +432,7 @@ bool OS_Link::main_menu()
       break;
       }
      }
+   emscripten_sleep(1);
   } while(!end);
 
   scheduler.pause(false);
@@ -767,6 +771,7 @@ switch(menu_id)
        break;
       }
      }
+     emscripten_sleep(1);
     }
    return false;
    }
@@ -829,6 +834,7 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
       break;
       }
      }
+     emscripten_sleep(1);
   } // End of while loop
 
  return(-1);
@@ -898,6 +904,7 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
        break;
       }
     }
+    emscripten_sleep(1);
    }
  }
 
@@ -982,7 +989,9 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
 		SDL_GL_SwapWindow(sdlWindow);
       break;
       }
+     emscripten_sleep(1);
      }
+    emscripten_sleep(1);
   } // End of while loop
  }
 

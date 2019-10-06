@@ -444,7 +444,7 @@ void Viewer::draw_game()
 //   4 = Victory
 bool Viewer::ShowFade(int fadeMode)
 {
-    std::cout << "in showfade" << std::endl;
+//    std::cout << "in showfade" << std::endl;
 	Uint32 ticks1, ticks2;
 	SDL_Event event;
 	int * wiz;
@@ -452,7 +452,7 @@ bool Viewer::ShowFade(int fadeMode)
 	VYSCAL = 0x80;
 
 	clearArea(&TXTPRI);
-    std::cout << "after cleararea showfade" << std::endl;
+//    std::cout << "after cleararea showfade" << std::endl;
 
 	switch (fadeMode)
 	{
@@ -477,19 +477,20 @@ bool Viewer::ShowFade(int fadeMode)
 		displayWinner();
 	}
 
-    std::cout << "after case" << std::endl;
-	while(SDL_PollEvent(&event)) ; // clear event buffer
+//    std::cout << "after case" << std::endl;
+	while(SDL_PollEvent(&event))
+        ; // clear event buffer
 
-    std::cout << "after while" << std::endl;
+//    std::cout << "after while" << std::endl;
 	RANGE=1;
 	SETSCL();
 
-    std::cout << "after setscl" << std::endl;
+//    std::cout << "after setscl" << std::endl;
 	// Start buzz
 	Mix_Volume(fadChannel, 0);
 	Mix_PlayChannel(fadChannel, creature.buzz, -1);
 
-    std::cout << "after playchannel" << std::endl;
+//    std::cout << "after playchannel" << std::endl;
 	for (VCTFAD = 32; (VCTFAD & 128) == 0; VCTFAD -= 2)
 	{
 		// Set volume of buzz
@@ -512,13 +513,14 @@ bool Viewer::ShowFade(int fadeMode)
 			{
 				Mix_HaltChannel(fadChannel);
 				clearArea(&TXTPRI);
-				while(SDL_PollEvent(&event)) ; // clear event buffer
+				while(SDL_PollEvent(&event))
+                    ; // clear event buffer
 				return false;
 			}
         emscripten_sleep(10);
 		} while (ticks2 < ticks1 + buzzStep);
 	}
-    std::cout << "after for" << std::endl;
+//    std::cout << "after for" << std::endl;
 
 	VCTFAD = 0;
 
@@ -526,22 +528,23 @@ bool Viewer::ShowFade(int fadeMode)
 	Mix_HaltChannel(fadChannel);
 	Mix_Volume(fadChannel, oslink.volumeLevel);
 	Mix_PlayChannel(fadChannel, creature.kaboom, 0);
-    std::cout << "after playchannel" << std::endl;
+//    std::cout << "after playchannel" << std::endl;
 	while (Mix_Playing(fadChannel) == 1)
 	{
 		if (fadeMode == 1 && scheduler.keyCheck())
 		{
-    std::cout << "in keycheck" << std::endl;
+//    std::cout << "in keycheck" << std::endl;
 			Mix_HaltChannel(fadChannel);
 			clearArea(&TXTPRI);
-			while(SDL_PollEvent(&event)) ; // clear event buffer
-    std::cout << "before return" << std::endl;
+			while(SDL_PollEvent(&event)) 
+                ; // clear event buffer
+//    std::cout << "before return" << std::endl;
 			return false;
 		}
         emscripten_sleep(10);
 	}
 
-    std::cout << "after while in docrash" << std::endl;
+//    std::cout << "after while in docrash" << std::endl;
 	// show message
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -553,7 +556,7 @@ bool Viewer::ShowFade(int fadeMode)
 	drawArea(&TXTPRI);
 	SDL_GL_SwapWindow(oslink.sdlWindow);
 
-    std::cout << "after swapwindow" << std::endl;
+//    std::cout << "after swapwindow" << std::endl;
 	if (fadeMode < 3)
 	{
 		// pause with wiz, status, and message
@@ -575,7 +578,8 @@ bool Viewer::ShowFade(int fadeMode)
 			if (fadeMode != 2 && scheduler.keyCheck())
 			{
 				clearArea(&TXTPRI);
-				while(SDL_PollEvent(&event)) ; // clear event buffer
+				while(SDL_PollEvent(&event)) 
+                    ; // clear event buffer
 				return false;
 			}
             emscripten_sleep(10);
@@ -599,7 +603,8 @@ bool Viewer::ShowFade(int fadeMode)
 			{
 				Mix_HaltChannel(fadChannel);
 				clearArea(&TXTPRI);
-				while(SDL_PollEvent(&event)) ; // clear event buffer
+				while(SDL_PollEvent(&event)) 
+                    ; // clear event buffer
 				return false;
 			}
             emscripten_sleep(10);
@@ -631,7 +636,8 @@ bool Viewer::ShowFade(int fadeMode)
 				{
 					Mix_HaltChannel(fadChannel);
 					clearArea(&TXTPRI);
-					while(SDL_PollEvent(&event)) ; // clear event buffer
+					while(SDL_PollEvent(&event)) 
+                        ; // clear event buffer
 					return false;
 				}
                 emscripten_sleep(10);
@@ -639,13 +645,14 @@ bool Viewer::ShowFade(int fadeMode)
 		}
 	}
 
-    std::cout << "before haltchannel" << std::endl;
+//    std::cout << "before haltchannel" << std::endl;
 	Mix_HaltChannel(fadChannel);
 
 	if (fadeMode < 3)
 	{
 		clearArea(&TXTPRI);
-		while(SDL_PollEvent(&event)) ; // clear event buffer
+		while(SDL_PollEvent(&event)) 
+            ; // clear event buffer
 		return true;
 	}
 	else
@@ -664,10 +671,11 @@ bool Viewer::ShowFade(int fadeMode)
             emscripten_sleep(10);
 		  }
 		clearArea(&TXTPRI);
-		while(SDL_PollEvent(&event)) ; // clear event buffer
+		while(SDL_PollEvent(&event)) 
+            ; // clear event buffer
 		return false;
 	}
-    std::cout << "done ShowFade" << std::endl;
+//    std::cout << "done ShowFade" << std::endl;
 }
 
 // This is the renderer method used to do the wizard
@@ -707,6 +715,7 @@ bool Viewer::draw_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
+                emscripten_sleep(10);
 			}
 
 			VCTFAD = 0;
@@ -735,6 +744,7 @@ bool Viewer::draw_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
+                emscripten_sleep(10);
 			}
 
 			fadeVal = 2;
@@ -789,6 +799,7 @@ void Viewer::enough_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
+                emscripten_sleep(10);
 			}
 
 			VCTFAD = 0;
@@ -818,6 +829,7 @@ void Viewer::enough_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
+                emscripten_sleep(10);
 			}
 
 			fadeVal = 2;
@@ -864,6 +876,7 @@ void Viewer::death_fade(int WIZ[])
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
+                emscripten_sleep(10);
 			}
 
 			VCTFAD = 0;
@@ -1298,6 +1311,7 @@ void Viewer::VIEWER()
 			--MAGFLG;
 			DRAWIT(FWDOBJ[object.OCBLND[objIdx].obj_type]);
 			DRAWIT(FWDOBJ[object.OCBLND[objIdx].obj_type]);
+            // Need to yield?
 		} while (true);
 
 
@@ -1308,6 +1322,7 @@ void Viewer::VIEWER()
 		dungeon.DROW.row += dungeon.STPTAB[player.PDIR * 2];
 		dungeon.DROW.col += dungeon.STPTAB[player.PDIR * 2 + 1];
 		++RANGE;
+        // Need to yield?
 	} while (RANGE <= 9);
 }
 
@@ -1659,6 +1674,7 @@ void Viewer::MAPPER()
 			glVertex2f(crd.newX((rc.col * 8) + 5), crd.newY((rc.row * 6) + 4));
 			glVertex2f(crd.newX((rc.col * 8) + 5), crd.newY((rc.row * 6) + 2));
 			glEnd();
+            // Need to yield?
 		} while (true);
 
 		// Mark Creatures
@@ -1688,6 +1704,7 @@ void Viewer::MAPPER()
 			glVertex2f(crd.newX((rc.col * 8) + 4), crd.newY((rc.row * 6) + 5));
 			glVertex2f(crd.newX((rc.col * 8) + 4), crd.newY((rc.row * 6) + 1));
 			glEnd();
+            // Need to yield?
 		} while (true);
 	}
 
@@ -1763,7 +1780,7 @@ void Viewer::MAPPER()
 		glVertex2f(crd.newX((rc.col * 8) + 5), crd.newY((rc.row * 6) + 5));
 		glVertex2f(crd.newX((rc.col * 8) + 5), crd.newY((rc.row * 6) + 4));
 		glEnd();
-
+        // Need to yield?
 	} while (true);
 }
 
@@ -1812,9 +1829,11 @@ void Viewer::drawVectorList(int VLA[])
 			}
 			ctr += 2;
 			++curVertex;
+            // Need to yield?
 		}
 		++curList;
 		ctr += 2;
+        // Need to yield?
 	}
 }
 
@@ -1857,6 +1876,7 @@ void Viewer::drawVectorListAQ(int VLA[])
 		glVertex2f(crd.newXa((double) VLA[ctr+6]),crd.newYa((double) VLA[ctr+7]));
 		ctr += 8;
 		++curQuad;
+        // Need to yield?
 	}
 	glEnd();
 }
@@ -2032,6 +2052,7 @@ void Viewer::drawVector(float X0, float Y0, float X1, float Y1)
 			XX += DX;
 			YY += DY;
 			--L;
+            // Need to yield?
 		} while (L > 0);
 	}
 }

@@ -81,6 +81,8 @@ private:
 	dodBYTE		SLEEP;
 	dodBYTE		NOISEF;
 	dodBYTE		NOISEV;
+
+    int ctr = 0;
 };
 
 #endif // DOD_SCHEDULER_HEADER

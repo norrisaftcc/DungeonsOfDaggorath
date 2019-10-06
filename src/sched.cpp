@@ -115,37 +115,44 @@ void Scheduler::SYSTCB()
 // not have any queues, but a simple array of Task objects.
 bool Scheduler::SCHED()
 {
-    std::cout << "In SCHED" << std::endl;
+//    std::cout << "In SCHED" << std::endl;
 	// Initialization
 	int	result = 0;  // not currently being used
-	int	ctr = 0;
 
 	// Main game execution loop
 	curTime = SDL_GetTicks();
 
 	if (curTime >= TCBLND[ctr].next_time)
 	{
+//    std::cout << "In next time" << std::endl;
 		switch (TCBLND[ctr].type)
 		{
 		case TID_CLOCK:
+//    std::cout << "In calling clock" << std::endl;
 			CLOCK();
 			break;
 		case TID_PLAYER:
+//    std::cout << "In calling player" << std::endl;
 			result = player.PLAYER();
 			break;
 		case TID_REFRESH_DISP:
+//    std::cout << "In calling display" << std::endl;
 			result = viewer.LUKNEW();
 			break;
 		case TID_HRTSLOW:
+//    std::cout << "In calling hslow" << std::endl;
 			result = player.HSLOW();
 			break;
 		case TID_TORCHBURN:
+//    std::cout << "In calling burn" << std::endl;
 			result = player.BURNER();
 			break;
 		case TID_CRTREGEN:
+//    std::cout << "In calling regen" << std::endl;
 			result = creature.CREGEN();
 			break;
 		case TID_CRTMOVE:
+//    std::cout << "In calling move" << std::endl;
 			result = creature.CMOVE(ctr, TCBLND[ctr].data);
 			break;
 		default:
@@ -154,7 +161,7 @@ bool Scheduler::SCHED()
 		}
 	}
 
-    std::cout << "after switch" << std::endl;
+//    std::cout << "after switch" << std::endl;
 	(ctr < TCBPTR) ? ++ctr : ctr = 0;
 
 	if (ZFLAG != 0) // Saving or Loading
@@ -169,7 +176,7 @@ bool Scheduler::SCHED()
 			ZFLAG = 0;
 		}
 	}
-    std::cout << "after ZFLAG" << std::endl;
+//    std::cout << "after ZFLAG" << std::endl;
 
 	if (player.PLRBLK.P_ATPOW < player.PLRBLK.P_ATDAM)
 	{
@@ -298,9 +305,7 @@ bool Scheduler::fadeLoop()
 		{
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
-			{
 				; // clear event buffer
-			}
 
 			// Stop buzz
 			Mix_HaltChannel(viewer.fadChannel);
@@ -314,6 +319,7 @@ bool Scheduler::fadeLoop()
 
 			return true;	// auto-play mode on == start regular game
 		}
+        emscripten_sleep(10);
 	}
 }
 
@@ -331,9 +337,7 @@ void Scheduler::deathFadeLoop()
 	viewer.done = false;
 
 	while(SDL_PollEvent(&event))
-	{
 		; // clear event buffer
-	}
 
 	// Start buzz
 	Mix_Volume(viewer.fadChannel, 0);
@@ -343,15 +347,14 @@ void Scheduler::deathFadeLoop()
 	{
 		viewer.death_fade(viewer.W1_VLA);
 		EscCheck();
+        emscripten_sleep(10);
 	}
 
 	// Stop buzz
 	Mix_HaltChannel(viewer.fadChannel);
 
 	while(SDL_PollEvent(&event))
-	{
 		; // clear event buffer
-	}
 
 	while(true)
 	{
@@ -360,11 +363,10 @@ void Scheduler::deathFadeLoop()
 		{
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
-			{
 				; // clear event buffer
-			}
 			return;
 		}
+        emscripten_sleep(10);
 	}
 }
 
@@ -383,9 +385,7 @@ void Scheduler::winFadeLoop()
 	viewer.done = false;
 
 	while(SDL_PollEvent(&event))
-	{
 		; // clear event buffer
-	}
 
 	// Start buzz
 	Mix_Volume(viewer.fadChannel, 0);
@@ -395,6 +395,7 @@ void Scheduler::winFadeLoop()
 	{
 		viewer.death_fade(viewer.W2_VLA);
 		EscCheck();
+        emscripten_sleep(10);
 	}
 
 	// Stop buzz
@@ -407,17 +408,14 @@ void Scheduler::winFadeLoop()
 		{
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
-			{
 				; // clear event buffer
-			}
 			return;
 		}
+        emscripten_sleep(10);
 	}
 
 	while(SDL_PollEvent(&event))
-	{
 		; // clear event buffer
-	}
 }
 
 // Used by wizard fade in/out function
@@ -438,6 +436,7 @@ bool Scheduler::keyCheck()
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			break;
 		}
+        emscripten_sleep(10);
 	}
 	return false;
 }
@@ -480,6 +479,7 @@ bool Scheduler::EscCheck()
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			break;
 		}
+        emscripten_sleep(10);
 	}
 	return false;
 }

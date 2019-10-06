@@ -111,6 +111,7 @@ void Parser::Reset()
 // This method puts a character into the DoD buffer
 void Parser::KBDPUT(dodBYTE c)
 {
+//    std::cout << "Added key to buffer" << std::endl;
 	KBDBUF[KBDTAL] = c;
 	++KBDTAL;
 	KBDTAL &= 31;
@@ -119,6 +120,7 @@ void Parser::KBDPUT(dodBYTE c)
 // This method gets a character from the DoD buffer
 dodBYTE Parser::KBDGET()
 {
+//    std::cout << "getting key from buffer" << std::endl;
 	dodBYTE c = 0;
 	if (KBDHDR == KBDTAL)
 		return c;

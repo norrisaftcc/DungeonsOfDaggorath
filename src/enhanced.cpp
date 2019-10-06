@@ -66,8 +66,9 @@ void ParseOpt(char *opt, char* name, char*val)
 	val[0]='\0';
 
 	// skip leading white space
-	while (opt[0] && (opt[0]<=' '))
+	while (opt[0] && (opt[0]<=' ')) {
 		opt++;
+    }
 
 	// search for next space in string
 	char *pDelim=strchr(opt,' ');
@@ -79,8 +80,9 @@ void ParseOpt(char *opt, char* name, char*val)
 		// move opt ptr after next space
 		opt=pDelim+1;
 		// skip white space
-		while (opt[0] && (opt[0]<=' '))
+		while (opt[0] && (opt[0]<=' ')) {
 			opt++;
+        }
 		// copy any remaining text into val
 		strcpy(val,opt);
 	}
@@ -271,7 +273,7 @@ bool PreTranslateCommand(dodBYTE *str)
 	char *pBuffer=buffer;
 	GetDodStr(buffer,str);
 
-	while (pBuffer[0] && (pBuffer[0]<=' ')) pBuffer++;
+	while (pBuffer[0] && (pBuffer[0]<=' ')) { pBuffer++;}
 
 	if (0==strncmp(pBuffer,"SETOPT ",7)) {
 		if (SetOption(pBuffer+7)) {

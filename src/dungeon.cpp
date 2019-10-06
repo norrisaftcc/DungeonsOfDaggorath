@@ -364,7 +364,7 @@ void Dungeon::CalcVFI()
 	{
 		VFTPTR = idx;
 		while (VFTTAB[idx++] != 0xFF)
-			;	// loop !!!
+            ;	// loop !!!
 		--lvl;
 	} while (lvl != 0xFF);
 }

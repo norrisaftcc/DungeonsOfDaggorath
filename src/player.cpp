@@ -90,6 +90,7 @@ void Player::LoadSounds()
 // from the demo data.
 int Player::PLAYER()
 {
+//    std::cout << "In PLAYER" << std::endl;
 	int tokCnt, tokCtr;
 	dodBYTE objstr[10];
 	dodBYTE * X, * U;
@@ -102,6 +103,7 @@ int Player::PLAYER()
 	dodBYTE c;
 	if (game.AUTFLG == 0)
 	{
+//    std::cout << "AUTFLG 0" << std::endl;
 		// Process Keyboard Buffer
 		do
 		{
@@ -110,10 +112,13 @@ int Player::PLAYER()
 			{
 				return 0;
 			}
+//            std::cout << "Got key from KBDGET: " << c << std::endl;
 			if (FAINT != 0)
 			{
-				while (parser.KBDGET() != 0)
-					;	// loop !!!
+//    std::cout << "FAINT" << std::endl;
+				while (parser.KBDGET() != 0) 
+                    ; // Need to yield?
+                
 				return 0;
 			}
 
@@ -135,8 +140,11 @@ int Player::PLAYER()
 				c = parser.I_SP;
 			}
 
+//    std::cout << "parsed: " << c << std::endl;
 			if(!HUMAN(c))
 				return -1;
+//    std::cout << "human" << std::endl;
+            emscripten_sleep(1); // Need to yield?
 		} while (true);
 	}
 	else
@@ -369,7 +377,9 @@ void Player::HUPDAT()
 						scheduler.EscCheck();
 					}
 					scheduler.curTime = SDL_GetTicks();
+                    emscripten_sleep(10);
 				} while (scheduler.curTime < ticks1 + 750);
+                emscripten_sleep(10);
 			} while (viewer.RLIGHT != 248);	// not equal to -8
 			--viewer.UPDATE;
 			parser.KBDHDR = 0;
@@ -398,7 +408,9 @@ void Player::HUPDAT()
 						scheduler.EscCheck();
 					}
 					scheduler.curTime = SDL_GetTicks();
+                    emscripten_sleep(10);
 				} while (scheduler.curTime < ticks1 + 750);
+                emscripten_sleep(10);
 			} while (viewer.RLIGHT != viewer.OLIGHT);
 			FAINT = 0;
 			viewer.PROMPT();
@@ -409,9 +421,7 @@ void Player::HUPDAT()
 	{
 		// Do death
 		while(SDL_PollEvent(&event))
-		{
 			; // clear event buffer
-		}
 		viewer.clearArea(&viewer.TXTSTS);
 		viewer.clearArea(&viewer.TXTPRI);
 		viewer.ShowFade(Viewer::FADE_DEATH);
@@ -630,6 +640,7 @@ void Player::PATTK()
 			}
 		}
 		scheduler.curTime = SDL_GetTicks();
+        emscripten_sleep(10);
 	}
 
 	if (U->obj_id >= Object::OBJ_RING_ENERGY && U->obj_id <= Object::OBJ_RING_FIRE)
@@ -682,6 +693,7 @@ void Player::PATTK()
 			}
 		}
 		scheduler.curTime = SDL_GetTicks();
+        emscripten_sleep(10);
 	}
 
 	viewer.OUTSTI(viewer.exps);
@@ -724,6 +736,7 @@ void Player::PATTK()
 			}
 		}
 		scheduler.curTime = SDL_GetTicks();
+        emscripten_sleep(10);
 	}
 
 	PPOW += (creature.CCBLND[cidx].P_CCPOW >> 3);
@@ -744,12 +757,11 @@ void Player::PATTK()
 		do
 		{
 			ticks2 = SDL_GetTicks();
+            emscripten_sleep(10);
 		} while (ticks2 < ticks1 + wizDelay);
 
 		while(SDL_PollEvent(&event))
-		{
 			; // clear event buffer
-		}
 		viewer.clearArea(&viewer.TXTSTS);
 		viewer.clearArea(&viewer.TXTPRI);
 		viewer.done = false;
@@ -927,6 +939,7 @@ void Player::PCLIMB()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
+                    emscripten_sleep(10);
 				} while (scheduler.curTime < ticks1 + viewer.prepPause);
 				viewer.display_mode = temp;
 				--game.LEVEL;
@@ -957,6 +970,7 @@ void Player::PCLIMB()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
+                    emscripten_sleep(10);
 				} while (scheduler.curTime < ticks1 + viewer.prepPause);
 				viewer.display_mode = temp;
 				++game.LEVEL;
@@ -1136,6 +1150,7 @@ void Player::PINCAN()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
+                    emscripten_sleep(10);
 				}
 
 				viewer.STATUS();
@@ -1145,15 +1160,14 @@ void Player::PINCAN()
 				{
 					// winner
 					while(SDL_PollEvent(&event))
-					{
 						; // clear event buffer
-					}
 
 					// Pause so player can see status line
 					ticks1 = SDL_GetTicks();
 					do
 					{
 						ticks2 = SDL_GetTicks();
+                        emscripten_sleep(10);
 					} while (ticks2 < ticks1 + wizDelay);
 
 					viewer.clearArea(&viewer.TXTSTS);
@@ -1188,6 +1202,7 @@ void Player::PINCAN()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
+                    emscripten_sleep(10);
 				}
 
 				viewer.STATUS();
@@ -1197,15 +1212,14 @@ void Player::PINCAN()
 				{
 					// Do winner
 					while(SDL_PollEvent(&event))
-					{
 						; // clear event buffer
-					}
 
 					// Pause so player can see status line
 					ticks1 = SDL_GetTicks();
 					do
 					{
 						ticks2 = SDL_GetTicks();
+                        emscripten_sleep(10);
 					} while (ticks2 < ticks1 + wizDelay);
 
 					viewer.clearArea(&viewer.TXTSTS);
@@ -1260,6 +1274,7 @@ void Player::PMOVE()
 				}
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		viewer.HLFSTP = 0;
 		PSTEP(0);
@@ -1280,6 +1295,7 @@ void Player::PMOVE()
 				}
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		return;
 	}
@@ -1302,6 +1318,7 @@ void Player::PMOVE()
 
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		viewer.BAKSTP = 0;
 		PSTEP(2);
@@ -1322,6 +1339,7 @@ void Player::PMOVE()
 				}
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		return;
 	}
@@ -1665,6 +1683,7 @@ void Player::ShowTurn(dodBYTE A)
 					SDL_GL_SwapWindow(oslink.sdlWindow);
 					redraw = false;
 				}
+                emscripten_sleep(10);
 			} while (scheduler.curTime < ticks1 + turnDelay);
 		}
 	}
@@ -1726,6 +1745,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		viewer.PUPDAT();
@@ -1747,6 +1767,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		viewer.STATUS();
@@ -1768,6 +1789,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		viewer.STATUS();
@@ -1791,6 +1813,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		viewer.STATUS();
@@ -1814,6 +1837,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		HEARTF = 0;
@@ -1839,6 +1863,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		HEARTF = 0;
@@ -1939,6 +1964,7 @@ bool Player::PSTEP(dodBYTE dir)
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
+            emscripten_sleep(10);
 		}
 
 		return false;
