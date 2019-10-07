@@ -149,6 +149,7 @@ void dodGame::COMINI()
 	{
 		oslink.process_events();
 		ticks2 = SDL_GetTicks();
+        emscripten_sleep(10);
 	} while (ticks2 < ticks1 + viewer.prepPause);
 	
 //    std::cout << "after prepare" << std::endl;
@@ -167,6 +168,7 @@ void dodGame::COMINI()
 		{
 			oslink.process_events();
 			ticks2 = SDL_GetTicks();
+            emscripten_sleep(10);
 		} while (ticks2 < ticks1 + 3000);
 	}
 //    std::cout << "after autflg" << std::endl;
@@ -200,13 +202,14 @@ void dodGame::Restart()
 
     
 	// Delay with "PREPARE!" on screen
-    emscripten_sleep(2500);
-//	ticks1 = SDL_GetTicks();
-//	do
-//	{
-//		oslink.process_events();
-//		ticks2 = SDL_GetTicks();
-//	} while (ticks2 < ticks1 + 2500);
+//    emscripten_sleep(2500);
+	ticks1 = SDL_GetTicks();
+	do
+	{
+		oslink.process_events();
+		ticks2 = SDL_GetTicks();
+        emscripten_sleep(10);
+	} while (ticks2 < ticks1 + 2500);
 	
 	creature.NEWLVL();
 	INIVU();
