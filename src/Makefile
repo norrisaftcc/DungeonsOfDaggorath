@@ -1,20 +1,22 @@
 OBJECTS = creature.o dod.o dodgame.o dungeon.o enhanced.o object.o oslink.o parser.o player.o sched.o viewer.o
 
-
-#CXX      = clang++-3.6
-ifeq ($(OS),Windows_NT)
+CXXFLAGS = -std=c++11 -c
+ifdef EMSCRIPTEN
 OUTPUT  = ../docs/index.html
+CCLINK  = -s USE_SDL=2 -O3 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file ../assets@/ -s FULL_ES2=1 -s ASYNCIFY -s WASM=1 -s EXIT_RUNTIME=1
+CXXFLAGS += -O3 -s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 -s FULL_ES2=1 -s ASYNCIFY -s WASM=1 -s EXIT_RUNTIME=1
+#CXX      = clang++-3.6
+else
+ifeq ($(OS),Windows_NT)
+OUTPUT  = ../dod.exe
 CCLINK  = -lopengl32 -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_mixer
 else
-OUTPUT  = ../docs/index.html
-#CCLINK  = -lGL -lSDL2 -lSDL2_mixer -s USE_SDL=2 -s USE_SDL_MIXER=2
-#CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s LEGACY_GL_EMULATION=1
-#CCLINK  = -s USE_SDL=2 -s USE_SDL_MIXER=2 -s FULL_ES2=1
-CCLINK  = -s USE_SDL=2 -O3 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file ../assets@/ -s FULL_ES2=1 -s ASYNCIFY -s WASM=1 -s EXIT_RUNTIME=1
+OUTPUT  = ../dod
+CCLINK  = -lGL -lSDL2 -lSDL2_mixer
+endif
 endif
 #RM = rm
 # -g is debug
-CXXFLAGS = -std=c++11 -c -O3 -s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 -s FULL_ES2=1 -s ASYNCIFY -s WASM=1 -s EXIT_RUNTIME=1
 
 all: $(OUTPUT)
 

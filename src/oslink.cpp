@@ -264,7 +264,13 @@ void OS_Link::init()
 	game.COMINI();
 
 //    std::cout << "After COMINI" << std::endl;
+#ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(main_game_loop, this, 0, 0);
+#else
+    while(1) {
+        main_game_loop(this);
+    }
+#endif
 //    std::cout << "End of init" << std::endl;
 }
 

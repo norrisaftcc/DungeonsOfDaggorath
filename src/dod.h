@@ -19,10 +19,21 @@ is held by Douglas J. Morgan.
 #ifndef DOD_COMMON_HEADER
 #define DOD_COMMON_HEADER
 
-#include <iostream>
+
+// Hacks to get the code to compile when not in emscripten
+#ifdef __EMSCRIPTEN__
 #include <GL/Regal.h>
 #include <GL/RegalGLU.h>
 #include <emscripten.h>
+#else
+#define emscripten_sleep(x) do {} while(0)
+#define RegalSetErrorCallback(x) do {} while(0)
+#define RegalMakeCurrent(x) do {} while(0)
+#define RegalSystemContext void
+#define glErrorStringREGAL(x) ""
+#endif
+
+#include <iostream>
 
 // SDL Headers
 #include <SDL2/SDL.h>
