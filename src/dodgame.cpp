@@ -149,7 +149,7 @@ void dodGame::COMINI()
 	{
 		oslink.process_events();
 		ticks2 = SDL_GetTicks();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	} while (ticks2 < ticks1 + viewer.prepPause);
 	
 //    std::cout << "after prepare" << std::endl;
@@ -168,7 +168,7 @@ void dodGame::COMINI()
 		{
 			oslink.process_events();
 			ticks2 = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (ticks2 < ticks1 + 3000);
 	}
 //    std::cout << "after autflg" << std::endl;
@@ -208,7 +208,7 @@ void dodGame::Restart()
 	{
 		oslink.process_events();
 		ticks2 = SDL_GetTicks();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	} while (ticks2 < ticks1 + 2500);
 	
 	creature.NEWLVL();
@@ -258,6 +258,6 @@ void dodGame::WAIT()
 			scheduler.EscCheck();
 		}
 		scheduler.curTime = SDL_GetTicks();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	} while (scheduler.curTime < ticks1 + 1500);
 }

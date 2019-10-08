@@ -230,8 +230,7 @@ void Scheduler::CLOCK()
 
 				// make sound
 				Mix_PlayChannel(hrtChannel, hrtSound[(dodBYTE) (player.HEARTS + 1)], 0);
-				emscripten_sleep(4); // Sound is 3.4 MS - is there a better way?
-//				while (Mix_Playing(hrtChannel) == 1) {emscripten_sleep(4);}; // !!!
+				while (Mix_Playing(hrtChannel) == 1) {emscripten_sleep(1);}; // !!!
 
 				if (player.HEARTF != 0)
 				{
@@ -319,7 +318,7 @@ bool Scheduler::fadeLoop()
 
 			return true;	// auto-play mode on == start regular game
 		}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 }
 
@@ -347,7 +346,7 @@ void Scheduler::deathFadeLoop()
 	{
 		viewer.death_fade(viewer.W1_VLA);
 		EscCheck();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 	// Stop buzz
@@ -366,7 +365,7 @@ void Scheduler::deathFadeLoop()
 				; // clear event buffer
 			return;
 		}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 }
 
@@ -395,7 +394,7 @@ void Scheduler::winFadeLoop()
 	{
 		viewer.death_fade(viewer.W2_VLA);
 		EscCheck();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 	// Stop buzz
@@ -411,7 +410,7 @@ void Scheduler::winFadeLoop()
 				; // clear event buffer
 			return;
 		}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 	while(SDL_PollEvent(&event))
@@ -436,7 +435,7 @@ bool Scheduler::keyCheck()
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			break;
 		}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 	return false;
 }
@@ -479,7 +478,7 @@ bool Scheduler::EscCheck()
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			break;
 		}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 	return false;
 }

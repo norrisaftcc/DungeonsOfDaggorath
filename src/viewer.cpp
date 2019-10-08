@@ -517,7 +517,7 @@ bool Viewer::ShowFade(int fadeMode)
                     ; // clear event buffer
 				return false;
 			}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 		} while (ticks2 < ticks1 + buzzStep);
 	}
 //    std::cout << "after for" << std::endl;
@@ -541,7 +541,7 @@ bool Viewer::ShowFade(int fadeMode)
 //    std::cout << "before return" << std::endl;
 			return false;
 		}
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 //    std::cout << "after while in docrash" << std::endl;
@@ -582,7 +582,7 @@ bool Viewer::ShowFade(int fadeMode)
                     ; // clear event buffer
 				return false;
 			}
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (ticks2 < ticks1 + midPause);
 
 		// erase message
@@ -607,7 +607,7 @@ bool Viewer::ShowFade(int fadeMode)
                     ; // clear event buffer
 				return false;
 			}
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		// start buzz again
@@ -640,7 +640,7 @@ bool Viewer::ShowFade(int fadeMode)
                         ; // clear event buffer
 					return false;
 				}
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			} while (ticks2 < ticks1 + buzzStep);
 		}
 	}
@@ -668,7 +668,7 @@ bool Viewer::ShowFade(int fadeMode)
 			drawVectorList(wiz);
 			drawArea(&TXTPRI);
 			SDL_GL_SwapWindow(oslink.sdlWindow);
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		  }
 		clearArea(&TXTPRI);
 		while(SDL_PollEvent(&event)) 
@@ -715,7 +715,7 @@ bool Viewer::draw_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 
 			VCTFAD = 0;
@@ -744,7 +744,7 @@ bool Viewer::draw_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 
 			fadeVal = 2;
@@ -799,7 +799,7 @@ void Viewer::enough_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 
 			VCTFAD = 0;
@@ -829,7 +829,7 @@ void Viewer::enough_fade()
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 
 			fadeVal = 2;
@@ -876,7 +876,7 @@ void Viewer::death_fade(int WIZ[])
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 
 			VCTFAD = 0;

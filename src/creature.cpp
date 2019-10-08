@@ -373,7 +373,7 @@ int Creature::CMOVE(int task, int cidx)
 					}
 				}
 				scheduler.curTime = SDL_GetTicks();
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 
 			// set player shielding parameters
@@ -426,7 +426,7 @@ int Creature::CMOVE(int task, int cidx)
 							}
 						}
 						scheduler.curTime = SDL_GetTicks();
-                        emscripten_sleep(10);
+                        emscripten_sleep(1);
 					}
 
 					player.DAMAGE(CCBLND[cidx].P_CCPOW, CCBLND[cidx].P_CCMGO,
@@ -731,7 +731,7 @@ bool Creature::CWALK(dodBYTE dir, CCB * cr)
 					scheduler.CLOCK();
 				}
 				scheduler.curTime = SDL_GetTicks();
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			}
 		}
 

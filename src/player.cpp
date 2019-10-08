@@ -377,9 +377,9 @@ void Player::HUPDAT()
 						scheduler.EscCheck();
 					}
 					scheduler.curTime = SDL_GetTicks();
-                    emscripten_sleep(10);
+                    emscripten_sleep(1);
 				} while (scheduler.curTime < ticks1 + 750);
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			} while (viewer.RLIGHT != 248);	// not equal to -8
 			--viewer.UPDATE;
 			parser.KBDHDR = 0;
@@ -408,9 +408,9 @@ void Player::HUPDAT()
 						scheduler.EscCheck();
 					}
 					scheduler.curTime = SDL_GetTicks();
-                    emscripten_sleep(10);
+                    emscripten_sleep(1);
 				} while (scheduler.curTime < ticks1 + 750);
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			} while (viewer.RLIGHT != viewer.OLIGHT);
 			FAINT = 0;
 			viewer.PROMPT();
@@ -640,7 +640,7 @@ void Player::PATTK()
 			}
 		}
 		scheduler.curTime = SDL_GetTicks();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 	if (U->obj_id >= Object::OBJ_RING_ENERGY && U->obj_id <= Object::OBJ_RING_FIRE)
@@ -693,7 +693,7 @@ void Player::PATTK()
 			}
 		}
 		scheduler.curTime = SDL_GetTicks();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 	viewer.OUTSTI(viewer.exps);
@@ -736,7 +736,7 @@ void Player::PATTK()
 			}
 		}
 		scheduler.curTime = SDL_GetTicks();
-        emscripten_sleep(10);
+        emscripten_sleep(1);
 	}
 
 	PPOW += (creature.CCBLND[cidx].P_CCPOW >> 3);
@@ -757,7 +757,7 @@ void Player::PATTK()
 		do
 		{
 			ticks2 = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (ticks2 < ticks1 + wizDelay);
 
 		while(SDL_PollEvent(&event))
@@ -939,7 +939,7 @@ void Player::PCLIMB()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
-                    emscripten_sleep(10);
+                    emscripten_sleep(1);
 				} while (scheduler.curTime < ticks1 + viewer.prepPause);
 				viewer.display_mode = temp;
 				--game.LEVEL;
@@ -970,7 +970,7 @@ void Player::PCLIMB()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
-                    emscripten_sleep(10);
+                    emscripten_sleep(1);
 				} while (scheduler.curTime < ticks1 + viewer.prepPause);
 				viewer.display_mode = temp;
 				++game.LEVEL;
@@ -1150,7 +1150,7 @@ void Player::PINCAN()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
-                    emscripten_sleep(10);
+                    emscripten_sleep(1);
 				}
 
 				viewer.STATUS();
@@ -1167,7 +1167,7 @@ void Player::PINCAN()
 					do
 					{
 						ticks2 = SDL_GetTicks();
-                        emscripten_sleep(10);
+                        emscripten_sleep(1);
 					} while (ticks2 < ticks1 + wizDelay);
 
 					viewer.clearArea(&viewer.TXTSTS);
@@ -1202,7 +1202,7 @@ void Player::PINCAN()
 						scheduler.CLOCK();
 					}
 					scheduler.curTime = SDL_GetTicks();
-                    emscripten_sleep(10);
+                    emscripten_sleep(1);
 				}
 
 				viewer.STATUS();
@@ -1219,7 +1219,7 @@ void Player::PINCAN()
 					do
 					{
 						ticks2 = SDL_GetTicks();
-                        emscripten_sleep(10);
+                        emscripten_sleep(1);
 					} while (ticks2 < ticks1 + wizDelay);
 
 					viewer.clearArea(&viewer.TXTSTS);
@@ -1274,7 +1274,7 @@ void Player::PMOVE()
 				}
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		viewer.HLFSTP = 0;
 		PSTEP(0);
@@ -1295,7 +1295,7 @@ void Player::PMOVE()
 				}
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		return;
 	}
@@ -1318,7 +1318,7 @@ void Player::PMOVE()
 
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		viewer.BAKSTP = 0;
 		PSTEP(2);
@@ -1339,7 +1339,7 @@ void Player::PMOVE()
 				}
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
 		return;
 	}
@@ -1683,7 +1683,7 @@ void Player::ShowTurn(dodBYTE A)
 					SDL_GL_SwapWindow(oslink.sdlWindow);
 					redraw = false;
 				}
-                emscripten_sleep(10);
+                emscripten_sleep(1);
 			} while (scheduler.curTime < ticks1 + turnDelay);
 		}
 	}
@@ -1745,7 +1745,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		viewer.PUPDAT();
@@ -1767,7 +1767,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		viewer.STATUS();
@@ -1789,7 +1789,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		viewer.STATUS();
@@ -1813,7 +1813,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		viewer.STATUS();
@@ -1837,7 +1837,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		HEARTF = 0;
@@ -1863,7 +1863,7 @@ void Player::PUSE()
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		HEARTF = 0;
@@ -1964,7 +1964,7 @@ bool Player::PSTEP(dodBYTE dir)
 				scheduler.CLOCK();
 			}
 			scheduler.curTime = SDL_GetTicks();
-            emscripten_sleep(10);
+            emscripten_sleep(1);
 		}
 
 		return false;
