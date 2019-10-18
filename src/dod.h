@@ -27,6 +27,8 @@ is held by Douglas J. Morgan.
 #include <emscripten.h>
 #else
 #define emscripten_sleep(x) do {} while(0)
+#define emscripten_pause_main_loop(x) do {} while(0)
+#define emscripten_resume_main_loop(x) do {} while(0)
 #define RegalSetErrorCallback(x) do {} while(0)
 #define RegalMakeCurrent(x) do {} while(0)
 #define RegalSystemContext void

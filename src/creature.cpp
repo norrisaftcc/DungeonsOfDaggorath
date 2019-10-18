@@ -362,6 +362,7 @@ int Creature::CMOVE(int task, int cidx)
 		{
 			// do creature sound
 			Mix_PlayChannel(creChannel, creSound[CCBLND[cidx].creature_id], 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(creChannel) == 1)
 			{
 				if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -369,12 +370,14 @@ int Creature::CMOVE(int task, int cidx)
 					scheduler.CLOCK();
 					if (game.AUTFLG && game.demoRestart == false)
 					{
+                        emscripten_resume_main_loop();
 						return 0;
 					}
 				}
-				scheduler.curTime = SDL_GetTicks();
                 emscripten_sleep(1);
+				scheduler.curTime = SDL_GetTicks();
 			}
+            emscripten_resume_main_loop();
 
 			// set player shielding parameters
 			shA = 0x80;
@@ -415,6 +418,7 @@ int Creature::CMOVE(int task, int cidx)
 				{
 					// make CLANK sound
 					Mix_PlayChannel(creChannel, clank, 0);
+                    emscripten_pause_main_loop();
 					while (Mix_Playing(creChannel) == 1)
 					{
 						if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -422,12 +426,14 @@ int Creature::CMOVE(int task, int cidx)
 							scheduler.CLOCK();
 							if (game.AUTFLG && game.demoRestart == false)
 							{
+                                emscripten_resume_main_loop();
 								return 0;
 							}
 						}
-						scheduler.curTime = SDL_GetTicks();
                         emscripten_sleep(1);
+						scheduler.curTime = SDL_GetTicks();
 					}
+                    emscripten_resume_main_loop();
 
 					player.DAMAGE(CCBLND[cidx].P_CCPOW, CCBLND[cidx].P_CCMGO,
 						   CCBLND[cidx].P_CCPHO, player.PPOW,
@@ -724,15 +730,17 @@ bool Creature::CWALK(dodBYTE dir, CCB * cr)
 
 			Mix_Volume(creChannelv, (MIX_MAX_VOLUME / 8) * (9 - big) );
 			Mix_PlayChannel(creChannelv, creSound[cr->creature_id], 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(creChannelv) == 1)
 			{
 				if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 				{
 					scheduler.CLOCK();
 				}
-				scheduler.curTime = SDL_GetTicks();
                 emscripten_sleep(1);
+				scheduler.curTime = SDL_GetTicks();
 			}
+            emscripten_resume_main_loop();
 		}
 
 		cr->P_CCROW = rr;

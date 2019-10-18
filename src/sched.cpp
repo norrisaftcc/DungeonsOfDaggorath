@@ -119,74 +119,78 @@ bool Scheduler::SCHED()
 	// Initialization
 	int	result = 0;  // not currently being used
 
-	// Main game execution loop
-	curTime = SDL_GetTicks();
+    do {
+	    // Main game execution loop
+	    curTime = SDL_GetTicks();
 
-	if (curTime >= TCBLND[ctr].next_time)
-	{
+	    if (curTime >= TCBLND[schedCtr].next_time)
+	    {
 //    std::cout << "In next time" << std::endl;
-		switch (TCBLND[ctr].type)
-		{
-		case TID_CLOCK:
+		    switch (TCBLND[schedCtr].type)
+		    {
+		        case TID_CLOCK:
 //    std::cout << "In calling clock" << std::endl;
-			CLOCK();
-			break;
-		case TID_PLAYER:
+			        CLOCK();
+			        break;
+		        case TID_PLAYER:
 //    std::cout << "In calling player" << std::endl;
-			result = player.PLAYER();
-			break;
-		case TID_REFRESH_DISP:
+			        result = player.PLAYER();
+			        break;
+		        case TID_REFRESH_DISP:
 //    std::cout << "In calling display" << std::endl;
-			result = viewer.LUKNEW();
-			break;
-		case TID_HRTSLOW:
+			        result = viewer.LUKNEW();
+			        break;
+		        case TID_HRTSLOW:
 //    std::cout << "In calling hslow" << std::endl;
-			result = player.HSLOW();
-			break;
-		case TID_TORCHBURN:
+			        result = player.HSLOW();
+			        break;
+		        case TID_TORCHBURN:
 //    std::cout << "In calling burn" << std::endl;
-			result = player.BURNER();
-			break;
-		case TID_CRTREGEN:
+			        result = player.BURNER();
+			        break;
+		        case TID_CRTREGEN:
 //    std::cout << "In calling regen" << std::endl;
-			result = creature.CREGEN();
-			break;
-		case TID_CRTMOVE:
+			        result = creature.CREGEN();
+			        break;
+		        case TID_CRTMOVE:
 //    std::cout << "In calling move" << std::endl;
-			result = creature.CMOVE(ctr, TCBLND[ctr].data);
-			break;
-		default:
+			        result = creature.CMOVE(schedCtr, TCBLND[schedCtr].data);
+			        break;
+		        default:
 			// error
-			break;
-		}
-	}
+			        break;
+		    }
+	    }
 
+        ++schedCtr;
 //    std::cout << "after switch" << std::endl;
-	(ctr < TCBPTR) ? ++ctr : ctr = 0;
+//	(schedCtr < TCBPTR) ? ++schedCtr : schedCtr = 0;
 
-	if (ZFLAG != 0) // Saving or Loading
-	{
-		if (ZFLAG == 0xFF)
-		{
-			return true; // Load game abandons current game
-		}
-		else
-		{
-			SAVE();
-			ZFLAG = 0;
-		}
-	}
+	    if (ZFLAG != 0) // Saving or Loading
+	    {
+		    if (ZFLAG == 0xFF)
+		    {
+			    return true; // Load game abandons current game
+		    }
+		    else
+		    {
+			    SAVE();
+			    ZFLAG = 0;
+		    }
+	    }
 //    std::cout << "after ZFLAG" << std::endl;
 
-	if (player.PLRBLK.P_ATPOW < player.PLRBLK.P_ATDAM)
-	{
-		return true; // Death
-	}
+	    if (player.PLRBLK.P_ATPOW < player.PLRBLK.P_ATDAM)
+	    {
+		    return true; // Death
+	    }
 
-	if (game.hasWon)
-	{
-		return true; // Victory
-	}
+	    if (game.hasWon)
+	    {
+		    return true; // Victory
+	    }
+    } while (schedCtr < TCBPTR);
+    schedCtr = 0;
     return false;
 }
 
@@ -230,7 +234,9 @@ void Scheduler::CLOCK()
 
 				// make sound
 				Mix_PlayChannel(hrtChannel, hrtSound[(dodBYTE) (player.HEARTS + 1)], 0);
+                emscripten_pause_main_loop();
 				while (Mix_Playing(hrtChannel) == 1) {emscripten_sleep(1);}; // !!!
+                emscripten_resume_main_loop();
 
 				if (player.HEARTF != 0)
 				{
@@ -298,6 +304,7 @@ bool Scheduler::fadeLoop()
 	Mix_Volume(viewer.fadChannel, 0);
 	Mix_PlayChannel(viewer.fadChannel, creature.buzz, -1);
 
+    emscripten_pause_main_loop();
 	while(true)
 	{
 		if ( keyCheck() )
@@ -309,6 +316,7 @@ bool Scheduler::fadeLoop()
 			// Stop buzz
 			Mix_HaltChannel(viewer.fadChannel);
 
+            emscripten_resume_main_loop();
 			return false;	// auto-play mode off == start demo game
 		}
 		if ( viewer.draw_fade() )
@@ -316,10 +324,12 @@ bool Scheduler::fadeLoop()
 			// Stop buzz
 			Mix_HaltChannel(viewer.fadChannel);
 
+            emscripten_resume_main_loop();
 			return true;	// auto-play mode on == start regular game
 		}
         emscripten_sleep(1);
 	}
+    emscripten_resume_main_loop();
 }
 
 void Scheduler::deathFadeLoop()
@@ -342,12 +352,14 @@ void Scheduler::deathFadeLoop()
 	Mix_Volume(viewer.fadChannel, 0);
 	Mix_PlayChannel(viewer.fadChannel, creature.buzz, -1);
 
+    emscripten_pause_main_loop();
 	while (!viewer.done)
 	{
 		viewer.death_fade(viewer.W1_VLA);
 		EscCheck();
         emscripten_sleep(1);
 	}
+    emscripten_resume_main_loop();
 
 	// Stop buzz
 	Mix_HaltChannel(viewer.fadChannel);
@@ -355,6 +367,7 @@ void Scheduler::deathFadeLoop()
 	while(SDL_PollEvent(&event))
 		; // clear event buffer
 
+    emscripten_pause_main_loop();
 	while(true)
 	{
 		viewer.death_fade(viewer.W1_VLA);
@@ -363,10 +376,12 @@ void Scheduler::deathFadeLoop()
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
 				; // clear event buffer
+            emscripten_resume_main_loop();
 			return;
 		}
         emscripten_sleep(1);
 	}
+    emscripten_resume_main_loop();
 }
 
 void Scheduler::winFadeLoop()
@@ -390,16 +405,19 @@ void Scheduler::winFadeLoop()
 	Mix_Volume(viewer.fadChannel, 0);
 	Mix_PlayChannel(viewer.fadChannel, creature.buzz, -1);
 
+    emscripten_pause_main_loop();
 	while (!viewer.done)
 	{
 		viewer.death_fade(viewer.W2_VLA);
 		EscCheck();
         emscripten_sleep(1);
 	}
+    emscripten_resume_main_loop();
 
 	// Stop buzz
 	Mix_HaltChannel(viewer.fadChannel);
 
+    emscripten_pause_main_loop();
 	while(true)
 	{
 		viewer.death_fade(viewer.W2_VLA);
@@ -408,10 +426,12 @@ void Scheduler::winFadeLoop()
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
 				; // clear event buffer
+            emscripten_resume_main_loop();
 			return;
 		}
         emscripten_sleep(1);
 	}
+    emscripten_resume_main_loop();
 
 	while(SDL_PollEvent(&event))
 		; // clear event buffer
@@ -435,7 +455,6 @@ bool Scheduler::keyCheck()
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			break;
 		}
-        emscripten_sleep(1);
 	}
 	return false;
 }
@@ -478,7 +497,6 @@ bool Scheduler::EscCheck()
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			break;
 		}
-        emscripten_sleep(1);
 	}
 	return false;
 }

@@ -144,7 +144,6 @@ int Player::PLAYER()
 			if(!HUMAN(c))
 				return -1;
 //    std::cout << "human" << std::endl;
-            emscripten_sleep(1); // Need to yield?
 		} while (true);
 	}
 	else
@@ -361,6 +360,7 @@ void Player::HUPDAT()
 			FAINT = -1;
 			viewer.clearArea(&viewer.TXTPRI);
 			viewer.OLIGHT = viewer.RLIGHT;
+            emscripten_pause_main_loop();
 			do
 			{
 				--viewer.MLIGHT;
@@ -376,11 +376,12 @@ void Player::HUPDAT()
 						scheduler.CLOCK();
 						scheduler.EscCheck();
 					}
-					scheduler.curTime = SDL_GetTicks();
                     emscripten_sleep(1);
+					scheduler.curTime = SDL_GetTicks();
 				} while (scheduler.curTime < ticks1 + 750);
                 emscripten_sleep(1);
 			} while (viewer.RLIGHT != 248);	// not equal to -8
+            emscripten_resume_main_loop();
 			--viewer.UPDATE;
 			parser.KBDHDR = 0;
 			parser.KBDTAL = 0;
@@ -392,6 +393,7 @@ void Player::HUPDAT()
 		if (HEARTR >= 4 && (HEARTR & 128) == 0)
 		{
 			// do recover from faint
+            emscripten_pause_main_loop();
 			do
 			{
 				--viewer.UPDATE;
@@ -407,11 +409,12 @@ void Player::HUPDAT()
 						scheduler.CLOCK();
 						scheduler.EscCheck();
 					}
-					scheduler.curTime = SDL_GetTicks();
                     emscripten_sleep(1);
+					scheduler.curTime = SDL_GetTicks();
 				} while (scheduler.curTime < ticks1 + 750);
                 emscripten_sleep(1);
 			} while (viewer.RLIGHT != viewer.OLIGHT);
+            emscripten_resume_main_loop();
 			FAINT = 0;
 			viewer.PROMPT();
 			--viewer.UPDATE;
@@ -629,6 +632,7 @@ void Player::PATTK()
 	// make sound for appropriate object
 	Mix_PlayChannel(object.objChannel,
 		object.objSound[U->obj_type], 0);
+    emscripten_pause_main_loop();
 	while (Mix_Playing(object.objChannel) == 1)
 	{
 		if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -636,12 +640,14 @@ void Player::PATTK()
 			scheduler.CLOCK();
 			if (game.AUTFLG && game.demoRestart == false)
 			{
+                emscripten_resume_main_loop();
 				return;
 			}
 		}
-		scheduler.curTime = SDL_GetTicks();
         emscripten_sleep(1);
+		scheduler.curTime = SDL_GetTicks();
 	}
+    emscripten_resume_main_loop();
 
 	if (U->obj_id >= Object::OBJ_RING_ENERGY && U->obj_id <= Object::OBJ_RING_FIRE)
 	{
@@ -682,6 +688,7 @@ void Player::PATTK()
 
 	// make KLINK sound
 	Mix_PlayChannel(object.objChannel, klink, 0);
+    emscripten_pause_main_loop();
 	while (Mix_Playing(object.objChannel) == 1)
 	{
 		if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -689,12 +696,14 @@ void Player::PATTK()
 			scheduler.CLOCK();
 			if (game.AUTFLG && game.demoRestart == false)
 			{
+                emscripten_resume_main_loop();
 				return;
 			}
 		}
-		scheduler.curTime = SDL_GetTicks();
         emscripten_sleep(1);
+		scheduler.curTime = SDL_GetTicks();
 	}
+    emscripten_resume_main_loop();
 
 	viewer.OUTSTI(viewer.exps);
 
@@ -725,6 +734,7 @@ void Player::PATTK()
 
 	// do loud explosion sound
 	Mix_PlayChannel(object.objChannel, bang, 0);
+    emscripten_pause_main_loop();
 	while (Mix_Playing(object.objChannel) == 1)
 	{
 		if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -732,12 +742,14 @@ void Player::PATTK()
 			scheduler.CLOCK();
 			if (game.AUTFLG && game.demoRestart == false)
 			{
+                emscripten_resume_main_loop();
 				return;
 			}
 		}
-		scheduler.curTime = SDL_GetTicks();
         emscripten_sleep(1);
+		scheduler.curTime = SDL_GetTicks();
 	}
+    emscripten_resume_main_loop();
 
 	PPOW += (creature.CCBLND[cidx].P_CCPOW >> 3);
 	if ((PPOW & 0x8000) != 0)
@@ -754,11 +766,13 @@ void Player::PATTK()
 
 		// Pause so player can see scroll
 		ticks1 = SDL_GetTicks();
+        emscripten_pause_main_loop();
 		do
 		{
-			ticks2 = SDL_GetTicks();
             emscripten_sleep(1);
+			ticks2 = SDL_GetTicks();
 		} while (ticks2 < ticks1 + wizDelay);
+        emscripten_resume_main_loop();
 
 		while(SDL_PollEvent(&event))
 			; // clear event buffer
@@ -932,15 +946,17 @@ void Player::PCLIMB()
 				viewer.draw_game();
 				ticks1 = SDL_GetTicks();
 				scheduler.curTime = ticks1;
+                emscripten_pause_main_loop();
 				do
 				{
 					if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 					{
 						scheduler.CLOCK();
 					}
-					scheduler.curTime = SDL_GetTicks();
                     emscripten_sleep(1);
+					scheduler.curTime = SDL_GetTicks();
 				} while (scheduler.curTime < ticks1 + viewer.prepPause);
+                emscripten_resume_main_loop();
 				viewer.display_mode = temp;
 				--game.LEVEL;
 				creature.NEWLVL();
@@ -963,15 +979,17 @@ void Player::PCLIMB()
 				viewer.draw_game();
 				ticks1 = SDL_GetTicks();
 				scheduler.curTime = ticks1;
+                emscripten_pause_main_loop();
 				do
 				{
 					if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 					{
 						scheduler.CLOCK();
 					}
-					scheduler.curTime = SDL_GetTicks();
                     emscripten_sleep(1);
+					scheduler.curTime = SDL_GetTicks();
 				} while (scheduler.curTime < ticks1 + viewer.prepPause);
+                emscripten_resume_main_loop();
 				viewer.display_mode = temp;
 				++game.LEVEL;
 				creature.NEWLVL();
@@ -1143,15 +1161,17 @@ void Player::PINCAN()
 				// make ring sound
 				Mix_PlayChannel(object.objChannel,
 					object.objSound[object.OCBLND[PLHAND].obj_type], 0);
+                emscripten_pause_main_loop();
 				while (Mix_Playing(object.objChannel) == 1)
 				{
 					if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 					{
 						scheduler.CLOCK();
 					}
-					scheduler.curTime = SDL_GetTicks();
                     emscripten_sleep(1);
+					scheduler.curTime = SDL_GetTicks();
 				}
+                emscripten_resume_main_loop();
 
 				viewer.STATUS();
 				viewer.PUPDAT();
@@ -1164,11 +1184,13 @@ void Player::PINCAN()
 
 					// Pause so player can see status line
 					ticks1 = SDL_GetTicks();
+                    emscripten_pause_main_loop();
 					do
 					{
-						ticks2 = SDL_GetTicks();
                         emscripten_sleep(1);
+						ticks2 = SDL_GetTicks();
 					} while (ticks2 < ticks1 + wizDelay);
+                    emscripten_resume_main_loop();
 
 					viewer.clearArea(&viewer.TXTSTS);
 					viewer.clearArea(&viewer.TXTPRI);
@@ -1195,15 +1217,17 @@ void Player::PINCAN()
 				// make ring sound
 				Mix_PlayChannel(object.objChannel,
 					object.objSound[object.OCBLND[PRHAND].obj_type], 0);
+                emscripten_pause_main_loop();
 				while (Mix_Playing(object.objChannel) == 1)
 				{
 					if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 					{
 						scheduler.CLOCK();
 					}
-					scheduler.curTime = SDL_GetTicks();
                     emscripten_sleep(1);
+					scheduler.curTime = SDL_GetTicks();
 				}
+                emscripten_pause_main_loop();
 
 				viewer.STATUS();
 				viewer.PUPDAT();
@@ -1215,12 +1239,14 @@ void Player::PINCAN()
 						; // clear event buffer
 
 					// Pause so player can see status line
+                    emscripten_pause_main_loop();
 					ticks1 = SDL_GetTicks();
 					do
 					{
-						ticks2 = SDL_GetTicks();
                         emscripten_sleep(1);
+						ticks2 = SDL_GetTicks();
 					} while (ticks2 < ticks1 + wizDelay);
+                    emscripten_resume_main_loop();
 
 					viewer.clearArea(&viewer.TXTSTS);
 					viewer.clearArea(&viewer.TXTPRI);
@@ -1263,6 +1289,7 @@ void Player::PMOVE()
 		viewer.PUPDAT();
 		ticks1 = SDL_GetTicks();
 		scheduler.curTime = ticks1;
+        emscripten_pause_main_loop();
 		do
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -1270,12 +1297,14 @@ void Player::PMOVE()
 				scheduler.CLOCK();
 				if (game.AUTFLG && game.demoRestart == false)
 				{
+                    emscripten_resume_main_loop();
 					return;
 				}
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
+        emscripten_resume_main_loop();
 		viewer.HLFSTP = 0;
 		PSTEP(0);
 		PDAM += (POBJWT >> 3) + 3;
@@ -1284,6 +1313,7 @@ void Player::PMOVE()
 		viewer.draw_game();
 		ticks1 = SDL_GetTicks();
 		scheduler.curTime = ticks1;
+        emscripten_pause_main_loop();
 		do
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -1291,12 +1321,14 @@ void Player::PMOVE()
 				scheduler.CLOCK();
 				if (game.AUTFLG && game.demoRestart == false)
 				{
+                    emscripten_resume_main_loop();
 					return;
 				}
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
+        emscripten_resume_main_loop();
 		return;
 	}
 	else if (A == Parser::DIR_BACK)
@@ -1306,6 +1338,7 @@ void Player::PMOVE()
 		viewer.PUPDAT();
 		ticks1 = SDL_GetTicks();
 		scheduler.curTime = ticks1;
+        emscripten_pause_main_loop();
 		do
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -1313,13 +1346,15 @@ void Player::PMOVE()
 				scheduler.CLOCK();
 				if (game.AUTFLG && game.demoRestart == false)
 				{
+                    emscripten_resume_main_loop();
 					return;
 				}
 
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
+        emscripten_resume_main_loop();
 		viewer.BAKSTP = 0;
 		PSTEP(2);
 		PDAM += (POBJWT / 8) + 3;
@@ -1328,6 +1363,7 @@ void Player::PMOVE()
 		viewer.draw_game();
 		ticks1 = SDL_GetTicks();
 		scheduler.curTime = ticks1;
+        emscripten_pause_main_loop();
 		do
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -1335,12 +1371,14 @@ void Player::PMOVE()
 				scheduler.CLOCK();
 				if (game.AUTFLG && game.demoRestart == false)
 				{
+                    emscripten_resume_main_loop();
 					return;
 				}
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		} while (scheduler.curTime < ticks1 + (moveDelay / 2));
+        emscripten_resume_main_loop();
 		return;
 	}
 	else if (A == Parser::DIR_RIGHT)
@@ -1658,6 +1696,7 @@ void Player::ShowTurn(dodBYTE A)
 		for (x = 0; x < lines; ++x)
 		{
 			ticks1 = SDL_GetTicks();
+            emscripten_pause_main_loop();
 			do
 			{
 				scheduler.curTime = SDL_GetTicks();
@@ -1667,6 +1706,7 @@ void Player::ShowTurn(dodBYTE A)
 					if (game.AUTFLG && game.demoRestart == false)
 					{
 						turning = false;
+                        emscripten_resume_main_loop();
 						return;
 					}
 					redraw = true;
@@ -1685,6 +1725,7 @@ void Player::ShowTurn(dodBYTE A)
 				}
                 emscripten_sleep(1);
 			} while (scheduler.curTime < ticks1 + turnDelay);
+            emscripten_resume_main_loop();
 		}
 	}
 	turning = false;
@@ -1738,15 +1779,17 @@ void Player::PUSE()
 		// make torch sound
 		Mix_PlayChannel(object.objChannel,
 			object.objSound[object.OCBLND[idx].obj_type], 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		viewer.PUPDAT();
 		return;
@@ -1760,15 +1803,17 @@ void Player::PUSE()
 		// make flask sound
 		Mix_PlayChannel(object.objChannel,
 			object.objSound[object.OCBLND[idx].obj_type], 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		viewer.STATUS();
 		HUPDAT();
@@ -1782,15 +1827,17 @@ void Player::PUSE()
 		// make flask sound
 		Mix_PlayChannel(object.objChannel,
 			object.objSound[object.OCBLND[idx].obj_type], 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		viewer.STATUS();
 		HUPDAT();
@@ -1806,15 +1853,17 @@ void Player::PUSE()
 		// make flask sound
 		Mix_PlayChannel(object.objChannel,
 			object.objSound[object.OCBLND[idx].obj_type], 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		viewer.STATUS();
 		HUPDAT();
@@ -1830,15 +1879,17 @@ void Player::PUSE()
 		// make scroll sound
 		Mix_PlayChannel(object.objChannel,
 			object.objSound[object.OCBLND[idx].obj_type], 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		HEARTF = 0;
 		viewer.display_mode = Viewer::MODE_MAP;
@@ -1856,15 +1907,17 @@ void Player::PUSE()
 		// make scroll sound
 		Mix_PlayChannel(object.objChannel,
 			object.objSound[object.OCBLND[idx].obj_type], 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		HEARTF = 0;
 		viewer.display_mode = Viewer::MODE_MAP;
@@ -1957,15 +2010,17 @@ bool Player::PSTEP(dodBYTE dir)
 	{
 		// do thud sound
 		Mix_PlayChannel(object.objChannel, thud, 0);
+        emscripten_pause_main_loop();
 		while (Mix_Playing(object.objChannel) == 1)
 		{
 			if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
 			{
 				scheduler.CLOCK();
 			}
-			scheduler.curTime = SDL_GetTicks();
             emscripten_sleep(1);
+			scheduler.curTime = SDL_GetTicks();
 		}
+        emscripten_resume_main_loop();
 
 		return false;
 	}

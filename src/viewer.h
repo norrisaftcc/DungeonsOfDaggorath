@@ -77,7 +77,7 @@ public:
 	void		drawVectorList(int VLA[]);
 	void		drawVector(float X0, float Y0, float X1, float Y1);
 	void		Reset();
-	bool		ShowFade(int fadeMode);
+	bool		ShowFade(int fadeMode, bool inMainLoop = true);
 	void            drawMenu(menu, int, int);
 	void		drawMenuList(int, int, std::string, std::string[], int, int);
 	void		drawMenuScrollbar(std::string, int);

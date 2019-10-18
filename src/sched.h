@@ -82,7 +82,7 @@ private:
 	dodBYTE		NOISEF;
 	dodBYTE		NOISEV;
 
-    int ctr = 0;
+    int schedCtr = 0;
 };
 
 #endif // DOD_SCHEDULER_HEADER

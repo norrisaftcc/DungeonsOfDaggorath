@@ -133,7 +133,7 @@ void dodGame::COMINI()
 	viewer.VYSCAL = 0x80;
 	viewer.VXSCALf = 128.0f;
 	viewer.VYSCALf = 128.0f;
-	AUTFLG = viewer.ShowFade(Viewer::FADE_BEGIN);
+	AUTFLG = viewer.ShowFade(Viewer::FADE_BEGIN, false);
 //    std::cout << "after showfade" << std::endl;
 	//AUTFLG = scheduler.fadeLoop();
 	//AUTFLG = false; // TAKE THIS LINE OUT !!!!!!!!!! [Prevents demo from starting]
@@ -145,12 +145,14 @@ void dodGame::COMINI()
 //    std::cout << "after drawgame" << std::endl;
 	// Delay with "PREPARE!" on screen
 	ticks1 = SDL_GetTicks();
+//    emscripten_pause_main_loop();
 	do
 	{
 		oslink.process_events();
-		ticks2 = SDL_GetTicks();
         emscripten_sleep(1);
+		ticks2 = SDL_GetTicks();
 	} while (ticks2 < ticks1 + viewer.prepPause);
+//    emscripten_resume_main_loop();
 	
 //    std::cout << "after prepare" << std::endl;
 	creature.NEWLVL();
@@ -164,12 +166,14 @@ void dodGame::COMINI()
 		viewer.draw_game();
 		// wait 3 seconds
 		ticks1 = SDL_GetTicks();
+//        emscripten_pause_main_loop();
 		do
 		{
 			oslink.process_events();
-			ticks2 = SDL_GetTicks();
             emscripten_sleep(1);
+			ticks2 = SDL_GetTicks();
 		} while (ticks2 < ticks1 + 3000);
+//        emscripten_resume_main_loop();
 	}
 //    std::cout << "after autflg" << std::endl;
 	INIVU();
@@ -204,12 +208,14 @@ void dodGame::Restart()
 	// Delay with "PREPARE!" on screen
 //    emscripten_sleep(2500);
 	ticks1 = SDL_GetTicks();
+    emscripten_pause_main_loop();
 	do
 	{
 		oslink.process_events();
-		ticks2 = SDL_GetTicks();
         emscripten_sleep(1);
+		ticks2 = SDL_GetTicks();
 	} while (ticks2 < ticks1 + 2500);
+    emscripten_resume_main_loop();
 	
 	creature.NEWLVL();
 	INIVU();
@@ -246,6 +252,7 @@ void dodGame::WAIT()
 	ticks1 = SDL_GetTicks();
 	scheduler.curTime = ticks1;
 
+    emscripten_pause_main_loop();
 	do
 	{
 		if (scheduler.curTime >= scheduler.TCBLND[0].next_time)
@@ -253,11 +260,13 @@ void dodGame::WAIT()
 			scheduler.CLOCK();
 			if (game.AUTFLG && game.demoRestart == false)
 			{
+                emscripten_resume_main_loop();
 				return;
 			}
 			scheduler.EscCheck();
 		}
-		scheduler.curTime = SDL_GetTicks();
         emscripten_sleep(1);
+		scheduler.curTime = SDL_GetTicks();
 	} while (scheduler.curTime < ticks1 + 1500);
+    emscripten_resume_main_loop();
 }

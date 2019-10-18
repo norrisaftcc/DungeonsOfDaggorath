@@ -442,7 +442,7 @@ void Viewer::draw_game()
 //   2 = Intermission after killing wizards image
 //   3 = Death
 //   4 = Victory
-bool Viewer::ShowFade(int fadeMode)
+bool Viewer::ShowFade(int fadeMode, bool inMainLoop)
 {
 //    std::cout << "in showfade" << std::endl;
 	Uint32 ticks1, ticks2;
@@ -504,7 +504,9 @@ bool Viewer::ShowFade(int fadeMode)
 		glLoadIdentity();
 		drawVectorList(wiz);
 		SDL_GL_SwapWindow(oslink.sdlWindow);
-
+        if(inMainLoop) {
+            emscripten_pause_main_loop();
+        }
 		ticks1 = SDL_GetTicks();
 		do
 		{
@@ -515,10 +517,16 @@ bool Viewer::ShowFade(int fadeMode)
 				clearArea(&TXTPRI);
 				while(SDL_PollEvent(&event))
                     ; // clear event buffer
+                if(inMainLoop) {
+                    emscripten_resume_main_loop();
+                }
 				return false;
 			}
         emscripten_sleep(1);
 		} while (ticks2 < ticks1 + buzzStep);
+        if(inMainLoop) {
+            emscripten_resume_main_loop();
+        }
 	}
 //    std::cout << "after for" << std::endl;
 
@@ -529,6 +537,9 @@ bool Viewer::ShowFade(int fadeMode)
 	Mix_Volume(fadChannel, oslink.volumeLevel);
 	Mix_PlayChannel(fadChannel, creature.kaboom, 0);
 //    std::cout << "after playchannel" << std::endl;
+    if(inMainLoop) {
+        emscripten_pause_main_loop();
+    }
 	while (Mix_Playing(fadChannel) == 1)
 	{
 		if (fadeMode == 1 && scheduler.keyCheck())
@@ -539,10 +550,16 @@ bool Viewer::ShowFade(int fadeMode)
 			while(SDL_PollEvent(&event)) 
                 ; // clear event buffer
 //    std::cout << "before return" << std::endl;
+            if(inMainLoop) {
+                emscripten_resume_main_loop();
+            }
 			return false;
 		}
         emscripten_sleep(1);
 	}
+    if(inMainLoop) {
+        emscripten_resume_main_loop();
+    }
 
 //    std::cout << "after while in docrash" << std::endl;
 	// show message
@@ -559,6 +576,9 @@ bool Viewer::ShowFade(int fadeMode)
 //    std::cout << "after swapwindow" << std::endl;
 	if (fadeMode < 3)
 	{
+        if(inMainLoop) {
+            emscripten_pause_main_loop();
+        }
 		// pause with wiz, status, and message
 		ticks1 = SDL_GetTicks();
 		do
@@ -580,10 +600,16 @@ bool Viewer::ShowFade(int fadeMode)
 				clearArea(&TXTPRI);
 				while(SDL_PollEvent(&event)) 
                     ; // clear event buffer
+                if(inMainLoop) {
+                    emscripten_resume_main_loop();
+                }
 				return false;
 			}
             emscripten_sleep(1);
 		} while (ticks2 < ticks1 + midPause);
+        if(inMainLoop) {
+            emscripten_resume_main_loop();
+        }
 
 		// erase message
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -597,6 +623,9 @@ bool Viewer::ShowFade(int fadeMode)
 
 		// do crash
 		Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+        if(inMainLoop) {
+            emscripten_pause_main_loop();
+        }
 		while (Mix_Playing(fadChannel) == 1)
 		{
 			if (fadeMode != 2 && scheduler.keyCheck())
@@ -605,10 +634,16 @@ bool Viewer::ShowFade(int fadeMode)
 				clearArea(&TXTPRI);
 				while(SDL_PollEvent(&event)) 
                     ; // clear event buffer
+                if(inMainLoop) {
+                    emscripten_resume_main_loop();
+                }
 				return false;
 			}
             emscripten_sleep(1);
 		}
+        if(inMainLoop) {
+            emscripten_resume_main_loop();
+        }
 
 		// start buzz again
 		Mix_Volume(fadChannel, 0);
@@ -629,6 +664,9 @@ bool Viewer::ShowFade(int fadeMode)
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 
 			ticks1 = SDL_GetTicks();
+            if(inMainLoop) {
+                emscripten_pause_main_loop();
+            }
 			do
 			{
 				ticks2 = SDL_GetTicks();
@@ -638,10 +676,16 @@ bool Viewer::ShowFade(int fadeMode)
 					clearArea(&TXTPRI);
 					while(SDL_PollEvent(&event)) 
                         ; // clear event buffer
+                    if(inMainLoop) {
+                        emscripten_resume_main_loop();
+                    }
 					return false;
 				}
                 emscripten_sleep(1);
 			} while (ticks2 < ticks1 + buzzStep);
+            if(inMainLoop) {
+                emscripten_resume_main_loop();
+            }
 		}
 	}
 
@@ -657,6 +701,9 @@ bool Viewer::ShowFade(int fadeMode)
 	}
 	else
 	{
+        if(inMainLoop) {
+            emscripten_pause_main_loop();
+        }
 		while (!scheduler.keyCheck()) // Wait for a key
 		  {
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -670,6 +717,9 @@ bool Viewer::ShowFade(int fadeMode)
 			SDL_GL_SwapWindow(oslink.sdlWindow);
             emscripten_sleep(1);
 		  }
+        if(inMainLoop) {
+            emscripten_resume_main_loop();
+        }
 		clearArea(&TXTPRI);
 		while(SDL_PollEvent(&event)) 
             ; // clear event buffer
@@ -712,11 +762,13 @@ bool Viewer::draw_fade()
 			Mix_HaltChannel(fadChannel);
 			Mix_Volume(fadChannel, oslink.volumeLevel);
 			Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
                 emscripten_sleep(1);
 			}
+            emscripten_resume_main_loop();
 
 			VCTFAD = 0;
 			fadeVal = 0;
@@ -741,11 +793,13 @@ bool Viewer::draw_fade()
 		{
 			// do sound crash
 			Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
                 emscripten_sleep(1);
 			}
+            emscripten_resume_main_loop();
 
 			fadeVal = 2;
 			delay = SDL_GetTicks();
@@ -796,11 +850,13 @@ void Viewer::enough_fade()
 			Mix_HaltChannel(fadChannel);
 			Mix_Volume(fadChannel, oslink.volumeLevel);
 			Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
                 emscripten_sleep(1);
 			}
+            emscripten_resume_main_loop();
 
 			VCTFAD = 0;
 			fadeVal = 0;
@@ -826,11 +882,13 @@ void Viewer::enough_fade()
 		{
 			// do sound crash
 			Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
                 emscripten_sleep(1);
 			}
+            emscripten_resume_main_loop();
 
 			fadeVal = 2;
 			delay = SDL_GetTicks();
@@ -873,11 +931,13 @@ void Viewer::death_fade(int WIZ[])
 			drawArea(&TXTPRI);
 			SDL_GL_SwapWindow(oslink.sdlWindow);
 			Mix_PlayChannel(fadChannel, creature.kaboom, 0);
+            emscripten_pause_main_loop();
 			while (Mix_Playing(fadChannel) == 1)
 			{
 				// Call keyboard routine ???
                 emscripten_sleep(1);
 			}
+            emscripten_resume_main_loop();
 
 			VCTFAD = 0;
 			fadeVal = 0;

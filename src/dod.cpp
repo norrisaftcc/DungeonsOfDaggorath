@@ -61,7 +61,13 @@ int main(int argc, char * argv[])
 	//exit(0);
 
     std::cout << "Initializing game\n" << std::endl;
-	oslink.init();
+    if(argc > 1) {
+        std::cout << "Argument: " << argv[1] << std::endl;
+        oslink.init(atoi(argv[1]));
+    }
+    else {
+        oslink.init(0);
+    }
     std::cout << "Done, returning." << std::endl;
 	return 0;
 }

@@ -117,8 +117,11 @@ static void myError(GLenum error) {
 // Updated - Now defaults to whatever is in the opts.ini file
 // if opts.ini doesn't exist or has invalid or missing values
 // uses defaults set by loadDefaults function (1024x768)
-void OS_Link::init()
+void OS_Link::init(int inputWidth)
 {
+    if(inputWidth != 0) {
+        width = inputWidth;
+    }
 //    std::cout << "In init" << std::endl;
 	loadOptFile();
 //    std::cout << "After opt file" << std::endl;
@@ -260,10 +263,10 @@ void OS_Link::init()
     // Wait for modes to change
     emscripten_sleep(2500);
 
-//    std::cout << "After sleep" << std::endl;
+    std::cout << "After sleep" << std::endl;
 	game.COMINI();
 
-//    std::cout << "After COMINI" << std::endl;
+    std::cout << "After COMINI" << std::endl;
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(main_game_loop, this, 0, 0);
 #else
@@ -294,7 +297,6 @@ void OS_Link::process_events()
 			SDL_GL_SwapWindow(sdlWindow);
 			break;
 		}
-        emscripten_sleep(1); // Need to yield?
 	}
 }
 
@@ -393,6 +395,7 @@ bool OS_Link::main_menu()
  do
    {
    SDL_Event event;
+   emscripten_pause_main_loop();
    while(SDL_PollEvent(&event))
    {
    switch(event.type)
@@ -440,6 +443,7 @@ bool OS_Link::main_menu()
      }
    emscripten_sleep(1);
   } while(!end);
+  emscripten_resume_main_loop();
 
   scheduler.pause(false);
 
@@ -760,6 +764,7 @@ switch(menu_id)
    SDL_Event event;
 
    viewer.aboutBox();
+   emscripten_pause_main_loop();
    while(true)
     {
     while(SDL_PollEvent(&event))
@@ -779,6 +784,7 @@ switch(menu_id)
      }
      emscripten_sleep(1);
     }
+   emscripten_resume_main_loop();
    return false;
    }
    break;
@@ -801,6 +807,7 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
  {
  int currentChoice = 0;
 
+ emscripten_pause_main_loop();
  while(true)
    {
    viewer.drawMenuList(x, y, title, list, listSize, currentChoice);
@@ -813,6 +820,7 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
       switch(event.key.keysym.sym)
         {
         case SDLK_RETURN:
+         emscripten_resume_main_loop();
          return(currentChoice);
          break;
 
@@ -825,6 +833,7 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
          break;
 
         case SDLK_ESCAPE:
+            emscripten_resume_main_loop();
 	 return(-1);
 	 break;
 
@@ -842,6 +851,7 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
      }
      emscripten_sleep(1);
   } // End of while loop
+  emscripten_resume_main_loop();
 
  return(-1);
  }
@@ -870,6 +880,7 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
 
  viewer.drawMenuScrollbar(title, (current - newMin) / increment);
 
+ emscripten_pause_main_loop();
  while(true)
    {
    SDL_Event event;
@@ -882,6 +893,7 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
        switch(event.key.keysym.sym)
         {
         case SDLK_RETURN:
+         emscripten_resume_main_loop();
          return(current + min);  // Readjust back to absolute value
          break;
 
@@ -894,6 +906,7 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
          break;
 
         case SDLK_ESCAPE:
+     emscripten_resume_main_loop();
 	 return(oldvalue);
 	 break;
 
@@ -912,6 +925,7 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
     }
     emscripten_sleep(1);
    }
+   emscripten_resume_main_loop();
  }
 
 /*****************************************************************************
@@ -927,6 +941,7 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
  viewer.drawMenuStringTitle(title);
  viewer.drawMenuString(newString);
 
+ emscripten_pause_main_loop();
  while(true)
    {
    SDL_Event event;
@@ -939,6 +954,7 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
       switch(event.key.keysym.sym)
         {
         case SDLK_RETURN:
+         emscripten_resume_main_loop();
          return;
          break;
 
@@ -974,6 +990,7 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
 
         case SDLK_ESCAPE:
          *(newString) = '\0';
+     emscripten_resume_main_loop();
 	 return;
 	 break;
 
@@ -999,6 +1016,7 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
      }
     emscripten_sleep(1);
   } // End of while loop
+  emscripten_resume_main_loop();
  }
 
 /******************************************************************************
