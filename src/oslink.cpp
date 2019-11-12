@@ -119,11 +119,12 @@ static void myError(GLenum error) {
 // uses defaults set by loadDefaults function (1024x768)
 void OS_Link::init(int inputWidth)
 {
+	loadOptFile();
+
     if(inputWidth != 0) {
         width = inputWidth;
     }
 //    std::cout << "In init" << std::endl;
-	loadOptFile();
 //    std::cout << "After opt file" << std::endl;
 
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)

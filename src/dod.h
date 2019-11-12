@@ -22,6 +22,7 @@ is held by Douglas J. Morgan.
 
 // Hacks to get the code to compile when not in emscripten
 #ifdef __EMSCRIPTEN__
+#include <emscripten/html5.h>
 #include <GL/Regal.h>
 #include <GL/RegalGLU.h>
 #include <emscripten.h>
