@@ -60,32 +60,8 @@ int main(int argc, char * argv[])
 	//printvls();
 	//exit(0);
 
-double viewWidth = 0;
-double viewHeight = 0;
 
-#ifdef __EMSCRIPTEN__
-    emscripten_get_element_css_size("#canvas", &viewWidth, &viewHeight);
-    // Override height with .75 of width for 4/3
-    viewHeight = (double)(viewWidth * .75);
-    // Now figure out height of the body to see if we need to shrink to fit
-    double bodyHeight = 0;
-    double bodyWidth = 0;
-    emscripten_get_element_css_size("#body", &bodyWidth, &bodyHeight);
-    if(bodyHeight < viewHeight) {
-        viewHeight = bodyHeight;
-        viewWidth = (double)(viewHeight * 1.25);
-    }
-    std::cout << "setting element to w: " << viewWidth << ", h: " << viewHeight << std::endl;
-    emscripten_set_element_css_size("#canvas", viewWidth, viewHeight);
-    emscripten_set_canvas_element_size("#canvas", (int)viewWidth, (int)viewHeight);
-    viewWidth = viewWidth * emscripten_get_device_pixel_ratio();
-    viewHeight = viewHeight * emscripten_get_device_pixel_ratio();
-
-#endif
-
-    std::cout << "Initializing game width: " << viewWidth << std::endl;
-    oslink.init((int)viewWidth);
-    std::cout << "Done, returning." << std::endl;
+    oslink.init();
 	return 0;
 }
 

@@ -39,7 +39,7 @@ public:
 	OS_Link();
 
 	// Public Interface
-	void init(int);			// main entry point for dod application
+	void init();			// main entry point for dod application
 	void quitSDL(int code);	// shuts down SDL before exiting
 	void process_events();	// used mainly to retrieve keystrokes
 	bool main_menu();       // used to implement the meta-menu

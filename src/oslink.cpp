@@ -117,22 +117,15 @@ static void myError(GLenum error) {
 // Updated - Now defaults to whatever is in the opts.ini file
 // if opts.ini doesn't exist or has invalid or missing values
 // uses defaults set by loadDefaults function (1024x768)
-void OS_Link::init(int inputWidth)
+void OS_Link::init()
 {
 	loadOptFile();
-
-    if(inputWidth != 0) {
-        width = inputWidth;
-    }
-//    std::cout << "In init" << std::endl;
-//    std::cout << "After opt file" << std::endl;
 
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
 	{
 		fprintf(stderr, "Video initialization failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
-//    std::cout << "After sdl init" << std::endl;
 
 	if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
 	{
@@ -140,7 +133,6 @@ void OS_Link::init(int inputWidth)
 		quitSDL(1);
 	}
 
-//    std::cout << "After open audio" << std::endl;
 	creature.LoadSounds();
 	object.LoadSounds();
 	scheduler.LoadSounds();
@@ -148,15 +140,11 @@ void OS_Link::init(int inputWidth)
 
 	Mix_AllocateChannels(4);
 	Mix_Volume(-1, MIX_MAX_VOLUME);
-//    std::cout << "After load sounds" << std::endl;
 	if(FullScreen == 0){
 		sdlWindow = SDL_CreateWindow("DOD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, (int) (width * 0.75),SDL_WINDOW_OPENGL);
-//        std::cout << "After full screen" << std::endl;
 	}else{
 		sdlWindow = SDL_CreateWindow("DOD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, (int) (width * 0.75),SDL_WINDOW_FULLSCREEN|SDL_WINDOW_OPENGL);
-//        std::cout << "After not full screen" << std::endl;
 	}
-//    std::cout << "After create window" << std::endl;
 
 	if(sdlWindow == 0){
 		fprintf(stderr, "Window creation failed: %s\n", SDL_GetError());
