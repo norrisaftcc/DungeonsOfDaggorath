@@ -297,6 +297,12 @@ void OS_Link::quitSDL(int code)
 	exit(code);
 }
 
+void OS_Link::send_input(char * keys) {
+    for(int i=0; keys[i] != '\0'; i++) {
+        parser.KBDPUT((dodBYTE)keys[i]);
+    }
+}
+
 // Processes key strokes.
 void OS_Link::handle_key_down(SDL_Keysym * keysym)
 {

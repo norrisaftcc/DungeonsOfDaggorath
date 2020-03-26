@@ -65,6 +65,12 @@ int main(int argc, char * argv[])
 	return 0;
 }
 
+extern "C" {
+    void sendinput(char * input) {
+        oslink.send_input(input);
+    }
+}
+
 void printalpha(int * vl, int len, std::string name)
 {
 	int ctr;

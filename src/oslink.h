@@ -44,7 +44,7 @@ public:
 	void process_events();	// used mainly to retrieve keystrokes
 	bool main_menu();       // used to implement the meta-menu
 	bool saveOptFile(void);
-
+    void send_input(char * keys); // Send keys from external interfaces
     void render(void);
 
 	// Public Data Fields
