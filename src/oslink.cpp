@@ -303,6 +303,11 @@ void OS_Link::send_input(char * keys) {
     }
 }
 
+void OS_Link::stop_demo() {
+    game.hasWon = true;
+    game.demoRestart = false;
+}
+
 // Processes key strokes.
 void OS_Link::handle_key_down(SDL_Keysym * keysym)
 {

@@ -45,6 +45,7 @@ public:
 	bool main_menu();       // used to implement the meta-menu
 	bool saveOptFile(void);
     void send_input(char * keys); // Send keys from external interfaces
+    void stop_demo(); // Stop the demo / start game
     void render(void);
 
 	// Public Data Fields

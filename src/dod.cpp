@@ -69,6 +69,11 @@ extern "C" {
     void sendinput(char * input) {
         oslink.send_input(input);
     }
+
+    void stopdemo() {
+        oslink.stop_demo();
+    }
+
 }
 
 void printalpha(int * vl, int len, std::string name)
