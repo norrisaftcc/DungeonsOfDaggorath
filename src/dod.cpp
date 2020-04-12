@@ -74,6 +74,14 @@ extern "C" {
         oslink.stop_demo();
     }
 
+    const char * getinventory() {
+        return viewer.getInventory();
+    }
+
+    const char * getfloor() {
+        return viewer.getFloor();
+    }
+
 }
 
 void printalpha(int * vl, int len, std::string name)

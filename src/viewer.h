@@ -60,6 +60,7 @@ public:
 	void		OUTSTI(dodBYTE * comp);
 	void		OUTSTR(dodBYTE * str);
 	void		OUTCHR(dodBYTE c);
+	char		dodToChar(dodBYTE c);
 	void		TXTXXX(dodBYTE c);
 	void		TXTSCR();
 	void		VIEWER();
@@ -84,8 +85,12 @@ public:
 	void		drawMenuStringTitle(std::string);
 	void		drawMenuString(std::string);
 	void		aboutBox(void);
+    const char * getInventory(void);
+    const char * getFloor(void);
 
 	// Public Data Fields
+    std::string currentInventory;
+    std::string currentFloor;
 	dodBYTE		VCTFAD;
 	dodBYTE		RANGE;
 	bool		showSeerMap;

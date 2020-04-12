@@ -23,6 +23,7 @@ is held by Douglas J. Morgan.
 #include "dungeon.h"
 #include "creature.h"
 #include "enhanced.h"
+#include <string>
 
 
 extern Creature		creature;
@@ -1194,6 +1195,62 @@ void Viewer::OUTCHR(dodBYTE c)
 	--UPDATE;
 }
 
+char Viewer::dodToChar(dodBYTE c) {
+	if (c == parser.I_BS)
+	{
+        // Nothing - treat as space for now
+		return ' ';
+	}
+	if (c == parser.I_CR)
+	{
+		// carriage return
+        return '\n';
+	}
+
+	if (c == parser.I_SP)
+	{
+        return ' ';
+	}
+	else if (c >= 1 && c <= 26)
+	{
+		return (c | 64);
+	}
+	else if (c == parser.I_EXCL)
+	{
+		return '!';
+	}
+	else if (c == parser.I_BAR)
+	{
+		return '_';
+	}
+	else if (c == parser.I_QUES)
+	{
+		return '?';
+	}
+	else if (c == parser.I_DOT)
+	{
+		return '.';
+	}
+	else if (c == parser.I_SHL)
+	{
+		return '<';
+	}
+	else if (c == parser.I_SHR)
+	{
+		return '>';
+	}
+	else if (c == parser.I_LHL)
+	{
+		return '{';
+	}
+	else if (c == parser.I_LHR)
+	{
+		return '}';
+	}
+
+    return ' '; // Unknown, return space for now
+}
+
 void Viewer::TXTXXX(dodBYTE c)
 {
 	if (c == parser.I_BS)
@@ -1519,6 +1576,51 @@ void Viewer::EXAMIN()
 	}
 
 	TXBFLG = 0;
+}
+
+const char * Viewer::getInventory() {
+    currentInventory.clear();
+    int ctr = player.BAGPTR;
+    while (ctr != -1) {
+	    object.OBJNAM(ctr);
+	    int x = 0;
+        
+	    while (*(parser.TOKEN + x) != 0xFF)
+	    {
+		    char curChar = dodToChar(*(parser.TOKEN + x));
+            currentInventory.append(1, curChar);
+		    ++x;
+	    }
+        currentInventory.append(1, '|');
+        ctr = object.OCBLND[ctr].P_OCPTR;
+    }
+    return currentInventory.c_str(); 
+}
+
+const char * Viewer::getFloor() {
+    currentFloor.clear();
+
+	int ctr;
+	object.OFINDF = 0;
+	do
+	{
+		ctr = object.OFIND(RowCol(player.PROW, player.PCOL));
+		if (ctr != -1)
+		{
+	        object.OBJNAM(ctr);
+	        int x = 0;
+        
+	        while (*(parser.TOKEN + x) != 0xFF)
+	        {
+		        char curChar = dodToChar(*(parser.TOKEN + x));
+                currentFloor.append(1, curChar);
+		        ++x;
+	        }
+            currentFloor.append(1, '|');
+		}
+	} while (ctr != -1);
+
+    return currentFloor.c_str(); 
 }
 
 void Viewer::PCRLF()
