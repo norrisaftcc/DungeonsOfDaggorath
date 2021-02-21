@@ -120,7 +120,6 @@ dodGame::dodGame() : LEVEL(2), AUTFLG(true), hasWon(false),
 // Game initialization
 void dodGame::COMINI()
 {
-//    std::cout << "In COMINI" << std::endl;
 	Uint32 ticks1, ticks2;
 
 	scheduler.SYSTCB();
@@ -128,13 +127,11 @@ void dodGame::COMINI()
 	player.HBEATF = 0;
 	viewer.clearArea(&viewer.TXTSTS);
 	viewer.clearArea(&viewer.TXTPRI);
-//    std::cout << "after cleararea" << std::endl;
 	viewer.VXSCAL = 0x80;
 	viewer.VYSCAL = 0x80;
 	viewer.VXSCALf = 128.0f;
 	viewer.VYSCALf = 128.0f;
 	AUTFLG = viewer.ShowFade(Viewer::FADE_BEGIN, false);
-//    std::cout << "after showfade" << std::endl;
 	//AUTFLG = scheduler.fadeLoop();
 	//AUTFLG = false; // TAKE THIS LINE OUT !!!!!!!!!! [Prevents demo from starting]
 	player.setInitialObjects(AUTFLG);
@@ -142,21 +139,16 @@ void dodGame::COMINI()
 	viewer.display_mode = Viewer::MODE_TITLE;
 	viewer.draw_game();
 
-//    std::cout << "after drawgame" << std::endl;
 	// Delay with "PREPARE!" on screen
 	ticks1 = SDL_GetTicks();
-//    emscripten_pause_main_loop();
 	do
 	{
 		oslink.process_events();
         emscripten_sleep(1);
 		ticks2 = SDL_GetTicks();
 	} while (ticks2 < ticks1 + viewer.prepPause);
-//    emscripten_resume_main_loop();
 	
-//    std::cout << "after prepare" << std::endl;
 	creature.NEWLVL();
-//    std::cout << "after newlevel" << std::endl;
 	if (AUTFLG)
 	{
 		// do map
@@ -166,20 +158,15 @@ void dodGame::COMINI()
 		viewer.draw_game();
 		// wait 3 seconds
 		ticks1 = SDL_GetTicks();
-//        emscripten_pause_main_loop();
 		do
 		{
 			oslink.process_events();
             emscripten_sleep(1);
 			ticks2 = SDL_GetTicks();
 		} while (ticks2 < ticks1 + 3000);
-//        emscripten_resume_main_loop();
 	}
-//    std::cout << "after autflg" << std::endl;
 	INIVU();
-//    std::cout << "after initvu" << std::endl;
 	viewer.PROMPT();
-//    std::cout << "after prompt" << std::endl;
 }
 
 void dodGame::Restart()
@@ -206,7 +193,6 @@ void dodGame::Restart()
 
     
 	// Delay with "PREPARE!" on screen
-//    emscripten_sleep(2500);
 	ticks1 = SDL_GetTicks();
     emscripten_pause_main_loop();
 	do
