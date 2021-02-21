@@ -103,8 +103,12 @@ void OS_Link::render() {
 }
 
 void main_game_loop(void* arg) {
-//    std::cout << "In main game loop" << std::endl;
+    // For emscripten, we don't care about the frame rate, we care about
+    // not interrupting an existing run - otherwise we might not run everything
+    // in a single frame and Daggorath runs synchronously.
+    emscripten_pause_main_loop();
     static_cast<OS_Link*>(arg)->render();
+    emscripten_resume_main_loop();
 }
 
 static void myError(GLenum error) {
@@ -395,7 +399,6 @@ bool OS_Link::main_menu()
  do
    {
    SDL_Event event;
-   emscripten_pause_main_loop();
    while(SDL_PollEvent(&event))
    {
    switch(event.type)
@@ -443,7 +446,6 @@ bool OS_Link::main_menu()
      }
    emscripten_sleep(1);
   } while(!end);
-  emscripten_resume_main_loop();
 
   scheduler.pause(false);
 
@@ -764,7 +766,6 @@ switch(menu_id)
    SDL_Event event;
 
    viewer.aboutBox();
-   emscripten_pause_main_loop();
    while(true)
     {
     while(SDL_PollEvent(&event))
@@ -784,7 +785,6 @@ switch(menu_id)
      }
      emscripten_sleep(1);
     }
-   emscripten_resume_main_loop();
    return false;
    }
    break;
@@ -807,7 +807,6 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
  {
  int currentChoice = 0;
 
- emscripten_pause_main_loop();
  while(true)
    {
    viewer.drawMenuList(x, y, title, list, listSize, currentChoice);
@@ -820,7 +819,6 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
       switch(event.key.keysym.sym)
         {
         case SDLK_RETURN:
-         emscripten_resume_main_loop();
          return(currentChoice);
          break;
 
@@ -833,7 +831,6 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
          break;
 
         case SDLK_ESCAPE:
-            emscripten_resume_main_loop();
 	 return(-1);
 	 break;
 
@@ -851,7 +848,6 @@ int OS_Link::menu_list(int x, int y, char *title, std::string list[], int listSi
      }
      emscripten_sleep(1);
   } // End of while loop
-  emscripten_resume_main_loop();
 
  return(-1);
  }
@@ -880,7 +876,6 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
 
  viewer.drawMenuScrollbar(title, (current - newMin) / increment);
 
- emscripten_pause_main_loop();
  while(true)
    {
    SDL_Event event;
@@ -893,7 +888,6 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
        switch(event.key.keysym.sym)
         {
         case SDLK_RETURN:
-         emscripten_resume_main_loop();
          return(current + min);  // Readjust back to absolute value
          break;
 
@@ -906,7 +900,6 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
          break;
 
         case SDLK_ESCAPE:
-     emscripten_resume_main_loop();
 	 return(oldvalue);
 	 break;
 
@@ -925,7 +918,6 @@ int OS_Link::menu_scrollbar(std::string title, int min, int max, int current)
     }
     emscripten_sleep(1);
    }
-   emscripten_resume_main_loop();
  }
 
 /*****************************************************************************
@@ -941,7 +933,6 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
  viewer.drawMenuStringTitle(title);
  viewer.drawMenuString(newString);
 
- emscripten_pause_main_loop();
  while(true)
    {
    SDL_Event event;
@@ -954,7 +945,6 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
       switch(event.key.keysym.sym)
         {
         case SDLK_RETURN:
-         emscripten_resume_main_loop();
          return;
          break;
 
@@ -990,7 +980,6 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
 
         case SDLK_ESCAPE:
          *(newString) = '\0';
-     emscripten_resume_main_loop();
 	 return;
 	 break;
 
@@ -1016,7 +1005,6 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
      }
     emscripten_sleep(1);
   } // End of while loop
-  emscripten_resume_main_loop();
  }
 
 /******************************************************************************

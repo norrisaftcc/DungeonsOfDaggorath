@@ -234,9 +234,7 @@ void Scheduler::CLOCK()
 
 				// make sound
 				Mix_PlayChannel(hrtChannel, hrtSound[(dodBYTE) (player.HEARTS + 1)], 0);
-                emscripten_pause_main_loop();
 				while (Mix_Playing(hrtChannel) == 1) {emscripten_sleep(1);}; // !!!
-                emscripten_resume_main_loop();
 
 				if (player.HEARTF != 0)
 				{
@@ -304,7 +302,6 @@ bool Scheduler::fadeLoop()
 	Mix_Volume(viewer.fadChannel, 0);
 	Mix_PlayChannel(viewer.fadChannel, creature.buzz, -1);
 
-    emscripten_pause_main_loop();
 	while(true)
 	{
 		if ( keyCheck() )
@@ -316,7 +313,6 @@ bool Scheduler::fadeLoop()
 			// Stop buzz
 			Mix_HaltChannel(viewer.fadChannel);
 
-            emscripten_resume_main_loop();
 			return false;	// auto-play mode off == start demo game
 		}
 		if ( viewer.draw_fade() )
@@ -324,12 +320,10 @@ bool Scheduler::fadeLoop()
 			// Stop buzz
 			Mix_HaltChannel(viewer.fadChannel);
 
-            emscripten_resume_main_loop();
 			return true;	// auto-play mode on == start regular game
 		}
         emscripten_sleep(1);
 	}
-    emscripten_resume_main_loop();
 }
 
 void Scheduler::deathFadeLoop()
@@ -352,14 +346,12 @@ void Scheduler::deathFadeLoop()
 	Mix_Volume(viewer.fadChannel, 0);
 	Mix_PlayChannel(viewer.fadChannel, creature.buzz, -1);
 
-    emscripten_pause_main_loop();
 	while (!viewer.done)
 	{
 		viewer.death_fade(viewer.W1_VLA);
 		EscCheck();
         emscripten_sleep(1);
 	}
-    emscripten_resume_main_loop();
 
 	// Stop buzz
 	Mix_HaltChannel(viewer.fadChannel);
@@ -367,7 +359,6 @@ void Scheduler::deathFadeLoop()
 	while(SDL_PollEvent(&event))
 		; // clear event buffer
 
-    emscripten_pause_main_loop();
 	while(true)
 	{
 		viewer.death_fade(viewer.W1_VLA);
@@ -376,12 +367,10 @@ void Scheduler::deathFadeLoop()
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
 				; // clear event buffer
-            emscripten_resume_main_loop();
 			return;
 		}
         emscripten_sleep(1);
 	}
-    emscripten_resume_main_loop();
 }
 
 void Scheduler::winFadeLoop()
@@ -405,19 +394,16 @@ void Scheduler::winFadeLoop()
 	Mix_Volume(viewer.fadChannel, 0);
 	Mix_PlayChannel(viewer.fadChannel, creature.buzz, -1);
 
-    emscripten_pause_main_loop();
 	while (!viewer.done)
 	{
 		viewer.death_fade(viewer.W2_VLA);
 		EscCheck();
         emscripten_sleep(1);
 	}
-    emscripten_resume_main_loop();
 
 	// Stop buzz
 	Mix_HaltChannel(viewer.fadChannel);
 
-    emscripten_pause_main_loop();
 	while(true)
 	{
 		viewer.death_fade(viewer.W2_VLA);
@@ -426,12 +412,10 @@ void Scheduler::winFadeLoop()
 			viewer.clearArea(&viewer.TXTPRI);
 			while(SDL_PollEvent(&event))
 				; // clear event buffer
-            emscripten_resume_main_loop();
 			return;
 		}
         emscripten_sleep(1);
 	}
-    emscripten_resume_main_loop();
 
 	while(SDL_PollEvent(&event))
 		; // clear event buffer
