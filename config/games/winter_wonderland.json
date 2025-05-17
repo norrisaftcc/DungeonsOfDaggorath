@@ -1,0 +1,285 @@
+{
+  "game_id": "winter_wonderland",
+  "title": "Winter Wonderland Snowball Battle",
+  "theme": "Winter/Christmas",
+  "difficulty": "family_friendly",
+  
+  "creatures": [
+    {
+      "id": "mischievous_kid",
+      "name": "Mischievous Kid",
+      "description": "A playful child throwing snowballs",
+      "power": 30,
+      "speed": 1200,
+      "attack_speed": 1500,
+      "magic_offense": 0,
+      "magic_defense": 0,
+      "phys_offense": 50,
+      "phys_defense": 50,
+      "damage": 5,
+      "sound_description": "giggling",
+      "behavior_pattern": "playful"
+    },
+    {
+      "id": "snowball_champion",
+      "name": "Snowball Champion",
+      "description": "The neighborhood's best snowball fighter",
+      "power": 60,
+      "speed": 1000,
+      "attack_speed": 1200,
+      "magic_offense": 0,
+      "magic_defense": 0,
+      "phys_offense": 100,
+      "phys_defense": 75,
+      "damage": 10,
+      "sound_description": "confident laughter",
+      "behavior_pattern": "aggressive"
+    },
+    {
+      "id": "snow_fort_defender",
+      "name": "Snow Fort Defender",
+      "description": "Kid defending their snow fort",
+      "power": 80,
+      "speed": 2000,
+      "attack_speed": 1000,
+      "magic_offense": 0,
+      "magic_defense": 0,
+      "phys_offense": 80,
+      "phys_defense": 120,
+      "damage": 8,
+      "sound_description": "yelling",
+      "behavior_pattern": "defensive"
+    },
+    {
+      "id": "ice_sprite",
+      "name": "Ice Sprite",
+      "description": "A magical winter fairy",
+      "power": 100,
+      "speed": 800,
+      "attack_speed": 1500,
+      "magic_offense": 150,
+      "magic_defense": 100,
+      "phys_offense": 30,
+      "phys_defense": 50,
+      "damage": 12,
+      "sound_description": "tinkling ice",
+      "behavior_pattern": "magical"
+    },
+    {
+      "id": "abominable_snowman",
+      "name": "Abominable Snowman",
+      "description": "A massive, grumpy snow creature",
+      "power": 500,
+      "speed": 2500,
+      "attack_speed": 3000,
+      "magic_offense": 100,
+      "magic_defense": 150,
+      "phys_offense": 200,
+      "phys_defense": 180,
+      "damage": 50,
+      "sound_description": "roaring",
+      "behavior_pattern": "boss"
+    }
+  ],
+  
+  "items": [
+    {
+      "id": "snowball",
+      "name": "Snowball",
+      "description": "A perfectly round snowball",
+      "item_type": "weapon",
+      "weight": 5,
+      "value": 8,
+      "magic_bonus": 0,
+      "physical_bonus": 100,
+      "special_ability": "quick_throw",
+      "reveal_requirement": 0
+    },
+    {
+      "id": "ice_ball",
+      "name": "Ice Ball",
+      "description": "A harder, icy snowball",
+      "item_type": "weapon",
+      "weight": 8,
+      "value": 15,
+      "magic_bonus": 0,
+      "physical_bonus": 150,
+      "special_ability": "stun_chance",
+      "reveal_requirement": 50
+    },
+    {
+      "id": "magic_snowflake",
+      "name": "Magic Snowflake",
+      "description": "A glowing crystalline snowflake",
+      "item_type": "weapon",
+      "weight": 2,
+      "value": 25,
+      "magic_bonus": 180,
+      "physical_bonus": 50,
+      "special_ability": "freeze_attack",
+      "reveal_requirement": 100
+    },
+    {
+      "id": "mittens",
+      "name": "Warm Mittens",
+      "description": "Cozy wool mittens",
+      "item_type": "shield",
+      "weight": 10,
+      "value": 10,
+      "magic_bonus": 0,
+      "physical_bonus": 80,
+      "special_ability": "cold_resist",
+      "reveal_requirement": 0
+    },
+    {
+      "id": "snow_shield",
+      "name": "Snow Shield",
+      "description": "A shield made of packed snow",
+      "item_type": "shield",
+      "weight": 20,
+      "value": 20,
+      "magic_bonus": 50,
+      "physical_bonus": 120,
+      "special_ability": "snowball_deflect",
+      "reveal_requirement": 75
+    },
+    {
+      "id": "ice_fortress",
+      "name": "Ice Fortress Shield",
+      "description": "A magical ice barrier",
+      "item_type": "shield",
+      "weight": 15,
+      "value": 35,
+      "magic_bonus": 150,
+      "physical_bonus": 150,
+      "special_ability": "frost_aura",
+      "reveal_requirement": 150
+    },
+    {
+      "id": "flashlight",
+      "name": "Flashlight",
+      "description": "A bright LED flashlight",
+      "item_type": "torch",
+      "weight": 8,
+      "value": 180,
+      "magic_bonus": 0,
+      "physical_bonus": 0,
+      "special_ability": "battery_powered",
+      "reveal_requirement": 0
+    },
+    {
+      "id": "lantern",
+      "name": "Winter Lantern",
+      "description": "An old-fashioned oil lantern",
+      "item_type": "torch",
+      "weight": 12,
+      "value": 300,
+      "magic_bonus": 50,
+      "physical_bonus": 0,
+      "special_ability": "wind_resistant",
+      "reveal_requirement": 0
+    },
+    {
+      "id": "aurora_light",
+      "name": "Aurora Light",
+      "description": "Magical northern lights in a bottle",
+      "item_type": "torch",
+      "weight": 5,
+      "value": 480,
+      "magic_bonus": 200,
+      "physical_bonus": 0,
+      "special_ability": "never_dims",
+      "reveal_requirement": 100
+    },
+    {
+      "id": "hot_cocoa",
+      "name": "Hot Cocoa",
+      "description": "A thermos of warming cocoa",
+      "item_type": "flask",
+      "weight": 10,
+      "value": 25,
+      "magic_bonus": 0,
+      "physical_bonus": 0,
+      "special_ability": "restore_warmth",
+      "reveal_requirement": 0
+    },
+    {
+      "id": "candy_cane",
+      "name": "Magic Candy Cane",
+      "description": "A peppermint staff of power",
+      "item_type": "weapon",
+      "weight": 12,
+      "value": 30,
+      "magic_bonus": 100,
+      "physical_bonus": 100,
+      "special_ability": "festive_bonus",
+      "reveal_requirement": 80
+    }
+  ],
+  
+  "room_themes": [
+    {
+      "id": "snow_maze",
+      "name": "Snow Maze",
+      "description": "Winding paths through snow banks",
+      "wall_description": "tall snow walls",
+      "floor_description": "packed snow paths",
+      "ambient_sounds": ["wind whistling", "snow crunching"],
+      "lighting_modifier": 1.2,
+      "danger_level": 1
+    },
+    {
+      "id": "ice_cavern",
+      "name": "Ice Cavern",
+      "description": "Glittering ice cave",
+      "wall_description": "crystalline ice walls",
+      "floor_description": "slippery ice floor",
+      "ambient_sounds": ["ice cracking", "echoes"],
+      "lighting_modifier": 0.8,
+      "danger_level": 3
+    },
+    {
+      "id": "snow_fort",
+      "name": "Snow Fort",
+      "description": "A complex of snow fortifications",
+      "wall_description": "packed snow ramparts",
+      "floor_description": "trampled snow",
+      "ambient_sounds": ["kids playing", "snowballs hitting"],
+      "lighting_modifier": 1.0,
+      "danger_level": 2
+    }
+  ],
+  
+  "num_levels": 5,
+  
+  "narrative": {
+    "title": "Winter Wonderland Snowball Battle",
+    "setting": "A magical winter neighborhood",
+    "intro_text": "The first snow of winter has fallen! The neighborhood kids are having the ultimate snowball fight, but something magical lurks in the deepest part of the snow maze...",
+    "victory_text": "You've defeated the Abominable Snowman and saved winter! The kids cheer as snow begins to fall gently once more.",
+    "death_text": "You've been knocked out by too many snowballs! Time to warm up with some hot cocoa...",
+    "level_descriptions": [
+      "The neighborhood playground - kids are everywhere!",
+      "The twisting snow maze - watch for ambushes!",
+      "The snow fort battlefield - defended positions!",
+      "The frozen pond - slippery and dangerous!",
+      "The Snowman's lair - an icy cavern deep in the woods!"
+    ],
+    "boss_encounter_text": "The Abominable Snowman rises from the snow, roaring with fury! He doesn't like his winter disturbed!",
+    "item_lore": {
+      "magic_snowflake": "Said to be a gift from the Winter Queen herself",
+      "aurora_light": "Captured northern lights that never fade",
+      "candy_cane": "The Snow Wizard's festive staff"
+    }
+  },
+  
+  "starting_equipment": ["snowball", "flashlight", "mittens"],
+  "victory_condition": "defeat_boss",
+  
+  "special_mechanics": [
+    "warmth_system",
+    "snowball_crafting",
+    "slide_movement",
+    "festive_bonuses"
+  ]
+}

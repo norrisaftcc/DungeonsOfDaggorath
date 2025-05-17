@@ -1,0 +1,286 @@
+{
+  "name": "Cyberspace Infiltrator",
+  "version": "1.0",
+  "theme": "cyberpunk",
+  "author": "Netrunner Collective",
+  "description": "Jack into the corporate mainframe and steal their data cores",
+  
+  "player": {
+    "title": "Netrunner",
+    "starting_position": {"row": 11, "col": 16, "level": 0},
+    "starting_health": 100,
+    "max_health": 100,
+    "health_name": "System Integrity",
+    "heart_rate_name": "Connection Ping",
+    "faint_message": "CONNECTION LOST - REBOOTING..."
+  },
+  
+  "items": {
+    "weapons": [
+      {
+        "id": "icebreaker_basic",
+        "name": "IceBreaker.exe",
+        "damage": 10,
+        "weight": 5,
+        "description": "Basic intrusion program",
+        "ascii": "[>_]"
+      },
+      {
+        "id": "logic_bomb",
+        "name": "LogicBomb.app",
+        "damage": 15,
+        "weight": 8,
+        "description": "Explosive code injection",
+        "ascii": "[*!*]"
+      },
+      {
+        "id": "virus_spike",
+        "name": "VirusSpike.bin",
+        "damage": 25,
+        "weight": 12,
+        "description": "Malicious payload delivery",
+        "ascii": "[</>]"
+      }
+    ],
+    "armor": [
+      {
+        "id": "firewall_basic",
+        "name": "Firewall.sys",
+        "defense": 5,
+        "weight": 3,
+        "description": "Standard protection suite",
+        "ascii": "[|||]"
+      },
+      {
+        "id": "proxy_shield",
+        "name": "ProxyShield.dll",
+        "defense": 8,
+        "weight": 5,
+        "description": "Redirects attacks through proxies",
+        "ascii": "[<=>]"
+      },
+      {
+        "id": "quantum_crypto",
+        "name": "QuantumCrypto.qbt",
+        "defense": 15,
+        "weight": 10,
+        "description": "Military-grade encryption",
+        "ascii": "[QC]"
+      }
+    ],
+    "consumables": [
+      {
+        "id": "defrag",
+        "name": "Defrag.bat",
+        "effect": "heal",
+        "value": 50,
+        "weight": 1,
+        "description": "Repairs system integrity",
+        "ascii": "[++]"
+      },
+      {
+        "id": "bandwidth_boost",
+        "name": "Bandwidth.cfg",
+        "effect": "speed",
+        "value": 10,
+        "weight": 1,
+        "description": "Temporarily increases connection speed",
+        "ascii": "[>>]"
+      },
+      {
+        "id": "scanner",
+        "name": "Scanner.exe",
+        "effect": "light",
+        "duration": 500,
+        "weight": 1,
+        "description": "Reveals nearby network nodes",
+        "ascii": "[o]"
+      }
+    ],
+    "quest": [
+      {
+        "id": "access_key",
+        "name": "RootAccess.key",
+        "weight": 0,
+        "description": "Grants admin privileges",
+        "ascii": "[#]"
+      },
+      {
+        "id": "data_core",
+        "name": "DataCore.zip",
+        "weight": 5,
+        "value": 1000,
+        "description": "Valuable corporate secrets",
+        "ascii": "[$]"
+      }
+    ]
+  },
+  
+  "creatures": [
+    {
+      "id": "probe",
+      "name": "Security_Probe",
+      "health": 10,
+      "damage": 5,
+      "defense": 2,
+      "speed": 3,
+      "description": "Basic scanning daemon",
+      "ascii": "[>.<]",
+      "death_message": "Process terminated",
+      "sound": "digital_beep.wav"
+    },
+    {
+      "id": "white_ice",
+      "name": "WhiteICE_2.0",
+      "health": 15,
+      "damage": 8,
+      "defense": 5,
+      "speed": 4,
+      "description": "Defensive barrier program",
+      "ascii": "[###]",
+      "death_message": "Firewall breached",
+      "sound": "static_burst.wav"
+    },
+    {
+      "id": "black_ice",
+      "name": "BlackICE_Lethal",
+      "health": 40,
+      "damage": 20,
+      "defense": 10,
+      "speed": 6,
+      "description": "Military-grade attack program",
+      "ascii": "[XXX]",
+      "death_message": "ICE melted",
+      "sound": "electronic_scream.wav"
+    },
+    {
+      "id": "spider_bot",
+      "name": "Spider_3.1",
+      "health": 25,
+      "damage": 12,
+      "defense": 5,
+      "speed": 8,
+      "description": "Autonomous security crawler",
+      "ascii": "[\\o/]",
+      "death_message": "Bot disconnected",
+      "sound": "servo_whine.wav"
+    },
+    {
+      "id": "ghost_ai",
+      "name": "Ghost_Protocol",
+      "health": 30,
+      "damage": 18,
+      "defense": 3,
+      "speed": 10,
+      "description": "Stealth hunter AI",
+      "ascii": "[~~~]",
+      "death_message": "Ghost exorcised",
+      "sound": "phase_shift.wav"
+    },
+    {
+      "id": "admin",
+      "name": "SysAdmin_Root",
+      "health": 100,
+      "damage": 30,
+      "defense": 20,
+      "speed": 5,
+      "description": "The corporate AI overlord",
+      "ascii": "[ADMIN]",
+      "death_message": "ROOT ACCESS GRANTED",
+      "sound": "system_critical.wav",
+      "is_boss": true
+    }
+  ],
+  
+  "levels": [
+    {
+      "depth": 0,
+      "name": "DMZ_Gateway",
+      "description": "The demilitarized zone - public facing servers",
+      "theme": "green_terminal",
+      "wall_char": "#",
+      "floor_char": ".",
+      "enemy_density": 0.1,
+      "item_density": 0.05
+    },
+    {
+      "depth": 1,
+      "name": "Corporate_Firewall",
+      "description": "First line of serious defense",
+      "theme": "amber_warning",
+      "wall_char": "█",
+      "floor_char": "░",
+      "enemy_density": 0.15,
+      "item_density": 0.08
+    },
+    {
+      "depth": 2,
+      "name": "Data_Vault",
+      "description": "Where the real secrets are kept",
+      "theme": "red_alert",
+      "wall_char": "▓",
+      "floor_char": "▒",
+      "enemy_density": 0.2,
+      "item_density": 0.1
+    },
+    {
+      "depth": 3,
+      "name": "Core_Mainframe",
+      "description": "The heart of the system",
+      "theme": "blue_ice",
+      "wall_char": "╬",
+      "floor_char": "═",
+      "enemy_density": 0.25,
+      "item_density": 0.15,
+      "has_boss": true
+    }
+  ],
+  
+  "messages": {
+    "welcome": "JACK IN SUCCESSFUL - WELCOME TO CYBERSPACE",
+    "death": "FATAL ERROR - CONNECTION TERMINATED",
+    "victory": "ACCESS GRANTED - DATA EXTRACTION COMPLETE",
+    "level_up": "BYPASSING SECURITY LAYER",
+    "level_down": "RETURNING TO PREVIOUS NODE",
+    "item_pickup": "PROGRAM DOWNLOADED",
+    "item_drop": "PROGRAM DELETED",
+    "attack_hit": "EXPLOIT SUCCESSFUL",
+    "attack_miss": "ACCESS DENIED",
+    "enemy_hit": "SECURITY BREACH DETECTED",
+    "low_health": "WARNING: SYSTEM INTEGRITY CRITICAL"
+  },
+  
+  "display": {
+    "color_scheme": "matrix_green",
+    "font": "terminal_mono",
+    "effects": {
+      "scanlines": true,
+      "crt_curve": true,
+      "glitch_on_damage": true,
+      "terminal_flicker": true
+    },
+    "ui_style": "minimal_hacker",
+    "ascii_mode": true
+  },
+  
+  "sounds": {
+    "ambient": "modem_static.wav",
+    "footstep": "keyboard_click.wav",
+    "door": "access_granted.wav",
+    "combat": "data_clash.wav",
+    "death": "blue_screen.wav",
+    "victory": "download_complete.wav"
+  },
+  
+  "meta": {
+    "difficulty": "normal",
+    "permadeath": true,
+    "save_enabled": false,
+    "scoring": {
+      "data_cores": 1000,
+      "ice_melted": 100,
+      "programs_collected": 50,
+      "speed_bonus": true
+    }
+  }
+}

@@ -16,7 +16,7 @@
 - [ ] Test and debug input system
 
 ## Sprint 3 - Python Engine/Simulation
-- [ ] Complete domain layer (entities, value objects)
+- [x] Complete domain layer (entities, value objects)
 - [ ] Implement application layer (commands, services)
 - [ ] Create infrastructure layer (repositories, config)
 - [ ] Build presentation layer (terminal, web, API)
@@ -63,6 +63,48 @@
 - [ ] Level editor GUI
 - [ ] Replay system
 - [ ] Tournament mode
+
+## Themed Editions
+
+### Cyberpunk Edition (William Gibson style)
+- [ ] Create cyberpunk game configuration with:
+  - [ ] ICE (Intrusion Countermeasures Electronics) as enemies
+    - Black ICE (deadly security programs)
+    - White ICE (defensive barriers)  
+    - Gray ICE (trackers and alarms)
+  - [ ] Replace weapons with:
+    - Icebreakers (attack programs)
+    - Logic bombs
+    - Virus payloads
+    - Data spikes
+  - [ ] Replace armor with:
+    - Firewalls
+    - Proxy shields
+    - Encryption layers
+  - [ ] Replace consumables with:
+    - Memory buffers (health)
+    - CPU boosters (speed)
+    - Bandwidth enhancers
+  - [ ] Replace magic items with:
+    - AI assistants
+    - Quantum processors
+    - Neural interfaces
+  - [ ] Cyberspace maze instead of dungeon
+    - Data nodes instead of rooms
+    - Network connections instead of corridors
+    - System cores instead of treasure
+  - [ ] Replace torch system with:
+    - Scan radius (visibility)
+    - Stealth rating (detection avoidance)
+  - [ ] Matrix-style visual theme
+    - Green/black terminal aesthetic
+    - ASCII art representations
+    - Glitch effects
+  - [ ] Gibson-esque narrative elements:
+    - Corporate datastores to raid
+    - AI entities to encounter
+    - Black market upgrades
+    - Reputation system with hacker collectives
 
 ## Technical Debt
 - [ ] Replace remaining sprintf calls
