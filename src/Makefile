@@ -1,6 +1,11 @@
 OBJECTS = creature.o dod.o dodgame.o dungeon.o enhanced.o object.o oslink.o parser.o player.o sched.o viewer.o
 
 CXXFLAGS = -std=c++11 -c
+# Add Homebrew paths for Apple Silicon Macs
+ifeq ($(shell uname -m),arm64)
+CXXFLAGS += -I/opt/homebrew/include
+LDFLAGS += -L/opt/homebrew/lib
+endif
 ifdef EMSCRIPTEN
 #CCLINK  = -s USE_SDL=2 -O3 -s USE_SDL_MIXER=2 -s USE_REGAL=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file ../assets@/ -s FULL_ES2=1 -s ASYNCIFY -s WASM=1 -s EXIT_RUNTIME=1
 
@@ -21,7 +26,11 @@ OUTPUT  = ../dod.exe
 CCLINK  = -lopengl32 -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_mixer
 else
 OUTPUT  = ../dod
+ifeq ($(shell uname),Darwin)
+CCLINK  = -framework OpenGL -lSDL2 -lSDL2_mixer
+else
 CCLINK  = -lGL -lSDL2 -lSDL2_mixer
+endif
 endif
 endif
 #RM = rm
@@ -30,7 +39,7 @@ endif
 all: $(OUTPUT)
 
 $(OUTPUT): $(OBJECTS)
-	$(CXX) -o $(OUTPUT) $(OBJECTS) $(CCLINK)
+	$(CXX) $(LDFLAGS) -o $(OUTPUT) $(OBJECTS) $(CCLINK)
 
 creature.o: creature.cpp creature.h dod.h
 	$(CXX) $(CXXFLAGS) creature.cpp

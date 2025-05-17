@@ -10,7 +10,10 @@ This is a C++ port of the 1982 game "Dungeons of Daggorath" originally created f
 
 ### Native Build (Unix/Linux/macOS)
 ```bash
-make            # Build native executable
+# On macOS, first install dependencies:
+brew install sdl2 sdl2_mixer
+
+make            # Build native executable  
 make clean      # Clean build artifacts
 ```
 

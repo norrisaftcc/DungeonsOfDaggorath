@@ -168,6 +168,9 @@ void OS_Link::init()
 		fprintf(stderr, "OpenGL context creation failed: %s\n", SDL_GetError());
 		quitSDL(1);
 	}
+	
+	// Initialize viewer OpenGL settings after context creation
+	viewer.setVidInv(false);
 //    std::cout << "After GL context" << std::endl;
 	//bpp = info->vfmt->BitsPerPixel;
 // TODO: ARE THESE NEEDED

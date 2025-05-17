@@ -319,7 +319,7 @@ Viewer::Viewer() : VCNTRX(128), VCNTRY(76),
 void Viewer::Reset()
 {
 	showSeerMap = true;
-	setVidInv(false);
+	// setVidInv(false);  // Moved to after OpenGL context creation
 	UPDATE = 0;
 	display_mode = MODE_TITLE;
 	HLFSTP = 0;
