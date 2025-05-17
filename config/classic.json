@@ -1,0 +1,93 @@
+{
+  "player": {
+    "starting_power": 160,
+    "starting_position": [16, 11],
+    "max_power": 32767,
+    "damage_per_move": 1,
+    "damage_per_attack": 2,
+    "weight_penalty_factor": 0.1
+  },
+  "creatures": {
+    "SPIDER": {
+      "name": "Spider",
+      "power": 32,
+      "move_speed": 1500,
+      "attack_speed": 2000,
+      "magic_offense": 0,
+      "magic_defense": 100,
+      "phys_offense": 100,
+      "phys_defense": 0,
+      "damage": 8,
+      "sound_id": 0
+    },
+    "VIPER": {
+      "name": "Viper",
+      "power": 64,
+      "move_speed": 1200,
+      "attack_speed": 1800,
+      "magic_offense": 50,
+      "magic_defense": 50,
+      "phys_offense": 50,
+      "phys_defense": 50,
+      "damage": 16,
+      "sound_id": 1
+    },
+    "WIZARD": {
+      "name": "Wizard",
+      "power": 32767,
+      "move_speed": 500,
+      "attack_speed": 800,
+      "magic_offense": 150,
+      "magic_defense": 199,
+      "phys_offense": 100,
+      "phys_defense": 100,
+      "damage": 256,
+      "sound_id": 5
+    }
+  },
+  "objects": {
+    "WOODEN_SWORD": {
+      "name": "Wooden Sword",
+      "obj_type": "SWORD",
+      "reveal_power": 0,
+      "weight": 15,
+      "value": 8,
+      "magic_offense": 0,
+      "magic_defense": 0,
+      "phys_offense": 100,
+      "phys_defense": 0
+    },
+    "ELVISH_SWORD": {
+      "name": "Elvish Sword",
+      "obj_type": "SWORD",
+      "reveal_power": 280,
+      "weight": 20,
+      "value": 32,
+      "magic_offense": 100,
+      "magic_defense": 100,
+      "phys_offense": 100,
+      "phys_defense": 100
+    }
+  },
+  "torches": {
+    "PINE": {
+      "name": "Pine Torch",
+      "burn_time": 180,
+      "phys_light": 3,
+      "magic_light": 0,
+      "decay_rate": 0.01
+    },
+    "SOLAR": {
+      "name": "Solar Torch",
+      "burn_time": 480,
+      "phys_light": 7,
+      "magic_light": 5,
+      "decay_rate": 0.005
+    }
+  },
+  "heartbeat_base_rate": 60,
+  "faint_threshold": 180,
+  "death_threshold": 250,
+  "attack_probability_scale": 1.0,
+  "damage_scale": 1.0
+}

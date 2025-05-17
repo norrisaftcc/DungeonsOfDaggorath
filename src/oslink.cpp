@@ -284,6 +284,9 @@ void OS_Link::process_events()
 		switch(event.type)
 		{
 		case SDL_KEYDOWN:
+			#ifdef DEBUG_INPUT
+			printf("Key down: %d\n", event.key.keysym.sym);
+			#endif
 			handle_key_down(&event.key.keysym);
 			break;
 		case SDL_QUIT:
@@ -1018,14 +1021,14 @@ void OS_Link::menu_string(char *newString, char *title, int maxLength)
 void OS_Link::loadOptFile(void)
  {
  char     inputString[80];
- char     fn[20];
+ char     fn[256];
  int      in;
  ifstream fin;
  char *   breakPoint;
 
  loadDefaults(); // In case some variables aren't in the opts file, and if no file exists
 
- sprintf(fn, "%s%s%s", confDir, pathSep, "opts.ini");
+ snprintf(fn, sizeof(fn), "%s%s%s", confDir, pathSep, "opts.ini");
 
  fin.open(fn);
  if (!fin)
@@ -1148,7 +1151,7 @@ bool OS_Link::saveOptFile(void)
  ofstream fout;
  char     fn[MAX_FILENAME_LENGTH];
 
- sprintf(fn, "%s%s%s", confDir, pathSep, "opts.ini");
+ snprintf(fn, sizeof(fn), "%s%s%s", confDir, pathSep, "opts.ini");
 
  fout.open(fn);
  if(!fout)

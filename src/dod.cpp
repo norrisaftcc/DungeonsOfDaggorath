@@ -81,6 +81,27 @@ extern "C" {
     const char * getfloor() {
         return viewer.getFloor();
     }
+    
+    // Sprint 2 additions for testing
+    int getplayerhealth() {
+        return player.PPOW;
+    }
+    
+    int getplayerx() {
+        return player.PCOL;
+    }
+    
+    int getplayery() {
+        return player.PROW;
+    }
+    
+    int getplayerdir() {
+        return player.PDIR;
+    }
+    
+    int getgamelevel() {
+        return game.LEVEL;
+    }
 
 }
 
@@ -177,6 +198,6 @@ void printvls()
 Mix_Chunk *Utils::LoadSound(std::string snd)
 {
 	char fn[256];
-	sprintf(fn, "%s%s%s", oslink.soundDir, oslink.pathSep, snd.c_str());
+	snprintf(fn, sizeof(fn), "%s%s%s", oslink.soundDir, oslink.pathSep, snd.c_str());
 	return Mix_LoadWAV(fn);
 }

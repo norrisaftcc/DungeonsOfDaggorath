@@ -1,0 +1,104 @@
+{
+  "player": {
+    "starting_power": 200,
+    "starting_position": [16, 11],
+    "max_power": 65535,
+    "damage_per_move": 1,
+    "damage_per_attack": 3,
+    "weight_penalty_factor": 0.05
+  },
+  "creatures": {
+    "DRONE": {
+      "name": "Security Drone",
+      "power": 50,
+      "move_speed": 800,
+      "attack_speed": 1000,
+      "magic_offense": 0,
+      "magic_defense": 150,
+      "phys_offense": 150,
+      "phys_defense": 50,
+      "damage": 12,
+      "sound_id": 0
+    },
+    "CYBORG": {
+      "name": "Rogue Cyborg",
+      "power": 150,
+      "move_speed": 1000,
+      "attack_speed": 1500,
+      "magic_offense": 100,
+      "magic_defense": 100,
+      "phys_offense": 100,
+      "phys_defense": 100,
+      "damage": 30,
+      "sound_id": 1
+    },
+    "AI_BOSS": {
+      "name": "Rogue AI",
+      "power": 50000,
+      "move_speed": 300,
+      "attack_speed": 600,
+      "magic_offense": 200,
+      "magic_defense": 200,
+      "phys_offense": 150,
+      "phys_defense": 150,
+      "damage": 500,
+      "sound_id": 5
+    }
+  },
+  "objects": {
+    "PLASMA_BLADE": {
+      "name": "Plasma Blade",
+      "obj_type": "SWORD",
+      "reveal_power": 0,
+      "weight": 10,
+      "value": 15,
+      "magic_offense": 50,
+      "magic_defense": 0,
+      "phys_offense": 150,
+      "phys_defense": 0
+    },
+    "PHOTON_SABER": {
+      "name": "Photon Saber",
+      "obj_type": "SWORD",
+      "reveal_power": 300,
+      "weight": 5,
+      "value": 50,
+      "magic_offense": 150,
+      "magic_defense": 150,
+      "phys_offense": 150,
+      "phys_defense": 150
+    },
+    "ENERGY_SHIELD": {
+      "name": "Energy Shield",
+      "obj_type": "SHIELD",
+      "reveal_power": 150,
+      "weight": 15,
+      "value": 40,
+      "magic_offense": 0,
+      "magic_defense": 180,
+      "phys_offense": 0,
+      "phys_defense": 180
+    }
+  },
+  "torches": {
+    "CHEM_LIGHT": {
+      "name": "Chem Light",
+      "burn_time": 240,
+      "phys_light": 4,
+      "magic_light": 0,
+      "decay_rate": 0.005
+    },
+    "HOLO_TORCH": {
+      "name": "Holographic Torch",
+      "burn_time": 600,
+      "phys_light": 8,
+      "magic_light": 6,
+      "decay_rate": 0.002
+    }
+  },
+  "heartbeat_base_rate": 80,
+  "faint_threshold": 200,
+  "death_threshold": 300,
+  "attack_probability_scale": 1.2,
+  "damage_scale": 1.5
+}
